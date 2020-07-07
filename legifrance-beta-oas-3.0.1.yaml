@@ -54,6 +54,9 @@ paths:
           content: {}
   /chrono/textCid/{textCid}:
     get:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Vérifie si un texte possède des versions
       description: Indique si un texte possède des versions chrono à partir de l'identifiant
         du texte
@@ -83,6 +86,9 @@ paths:
           content: {}
   /consult/jorfCont:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Liste de sommaire JORF
       description: Récupère la liste de conteneurs/sommaires JORF
       operationId: displayJorfContUsingPOST
@@ -115,6 +121,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/dossierLegislatif:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu d'un dossier législatif
       description: Récupère le contenu d'un dossier legislatif par son identifiant
       operationId: displayDossierLegislatifUsingPOST
@@ -147,6 +156,9 @@ paths:
       x-codegen-request-body-name: request
   /list/docsAdmins:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Liste des documents administratifs
       description: Permet de récupérer la liste des documents administratifs pour
         une période donnée
@@ -180,6 +192,9 @@ paths:
       x-codegen-request-body-name: request
   /suggest/acco:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Suggestions des siret et raisons sociale pour les accords
       description: Effectue les suggestions siret et raisons sociales sur les accords
         d'entreprise à partir d'une chaine de caractères
@@ -213,6 +228,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/juri:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu texte fonds JURI
       description: Récupère le contenu d'un texte du fonds JURI à partir de son identifiant
       operationId: displayJuriUsingPOST
@@ -245,6 +263,9 @@ paths:
       x-codegen-request-body-name: request
   /chrono/textCid:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Version d'un texte
       description: Récupère une version spécifique d'un texte à partir de l'identifiant
         du texte
@@ -278,6 +299,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/getTables:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Liste des tables annuelles
       description: Permet de récupérer l'ensemble des tables annuelles pour une période
         donnée
@@ -311,6 +335,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/legiPart:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu texte fonds LEGI
       description: Récupère le contenu d'un texte du fonds LEGI à partir de son identifiant
         et de sa date de vigueur
@@ -344,6 +371,9 @@ paths:
       x-codegen-request-body-name: legiConsultRequest
   /misc/commitId:
     get:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Informations déploiement et versionning
       description: Récupère les informations relatives au déploiement et au versionning
         de l'application
@@ -366,6 +396,9 @@ paths:
           content: {}
   /list/dossiersLegislatifs:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Liste paginée des dossiers législatifs
       description: Récupère les dossiers législatifs dans une liste paginée
       operationId: listDossiersLegislatifsUsingPOST
@@ -398,6 +431,9 @@ paths:
       x-codegen-request-body-name: request
   /misc/datesWithoutJo:
     get:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Liste des dates sans JO
       description: Permet de récupérer l'ensemble des dates pour lesquelles il n'existe
         pas de Journal Officiel
@@ -420,6 +456,9 @@ paths:
           content: {}
   /list/conventions:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Liste paginée des conventions
       description: Récupère les conventions dans une liste paginée
       operationId: listConventionsUsingPOST
@@ -452,6 +491,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/jorf:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu texte fonds JORF
       description: Récupère le contenu d'un texte du fonds JORF à partir de son identifiant
       operationId: displayJorfUsingPOST
@@ -484,6 +526,9 @@ paths:
       x-codegen-request-body-name: jorfConsultRequest
   /consult/lastNJo:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Derniers journaux officels
       description: Récupère les derniers journaux officiels
       operationId: getLastNJoUsingPOST
@@ -516,6 +561,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/ping:
     get:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Teste le controller
       description: Retourne pong
       operationId: pingUsingGET_1
@@ -537,6 +585,9 @@ paths:
           content: {}
   /consult/kaliArticle:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu des conventions collectives depuis un article
       description: Récupère le contenu d'un texte du fonds des conventions collectives
         (KALI) à partir de l'identifiant de son article
@@ -570,6 +621,9 @@ paths:
       x-codegen-request-body-name: request
   /list/loda:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Liste paginée des textes de type LODA
       description: Récupère les éléments de type LODA dans une liste paginée
       operationId: listLODAUsingPOST
@@ -602,6 +656,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/kaliSection:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu des conventions collectives depuis une section
       description: Récupère le contenu d'un texte du fonds des conventions collectives
         (KALI) à partir de l'identifiant de sa section
@@ -635,6 +692,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/kaliCont:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu des conteneurs des conventions collectives
       description: Récupère le contenu d'un conteneur du fonds des conventions collectives
         (KALI) à partir de son identifiant
@@ -668,6 +728,9 @@ paths:
       x-codegen-request-body-name: request
   /list/legislatures:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Liste des législatures
       description: Récupère les législatures
       operationId: listLegislaturesUsingPOST
@@ -692,6 +755,9 @@ paths:
           content: {}
   /search/nearestVersion:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Récupération des infos de la version la plus proche
       description: Permet de récupérer le titre et la section de la version d'un texte
         la plus proche d'une date donnée
@@ -725,6 +791,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/code/tableMatieres:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu table des matières d'un CODE
       description: Récupère la table des matières d'un texte de type CODE à partir
         de son identifiant et de sa date de vigueur
@@ -758,6 +827,9 @@ paths:
       x-codegen-request-body-name: codeConsultRequest
   /consult/sameNumArticle:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Liste des articles ayant eu le même numéro
       description: Permet de récupérer les liens des articles ayant eu le même numéro
         que l'article en cours dans des versions précédentes du texte
@@ -791,6 +863,9 @@ paths:
       x-codegen-request-body-name: sameNumArticleRequest
   /consult/concordanceLinksArticle:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Liste des liens de concordance d'un article
       description: Permet de récupérer les liens de concordance d'un article
       operationId: displayConcordanceLinksArticleUsingPOST
@@ -823,6 +898,9 @@ paths:
       x-codegen-request-body-name: concordanceLinksRequest
   /consult/code:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu texte type CODE
       description: Récupère le contenu d'un texte de type CODE à partir de son identifiant
         et de sa date de vigueur
@@ -856,6 +934,9 @@ paths:
       x-codegen-request-body-name: codeConsultRequest
   /search:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Recherche générique des documents indexés
       description: Permet de faire une recherche de documents. On peut préciser le
         fond, les filtres textuels, les facettes et la pagination
@@ -889,6 +970,9 @@ paths:
       x-codegen-request-body-name: jsonRequest
   /list/ping:
     get:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Teste le controller
       description: Retourne pong
       operationId: pingUsingGET_3
@@ -910,6 +994,9 @@ paths:
           content: {}
   /chrono/ping:
     get:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Teste le controller
       description: Retourne pong
       operationId: pingUsingGET
@@ -931,6 +1018,9 @@ paths:
           content: {}
   /consult/kaliText:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu des conventions collectives
       description: Récupère le contenu d'un texte du fonds des conventions collectives
         (KALI) à partir de son identifiant
@@ -964,6 +1054,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/getArticle:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu d'un article
       description: Récupère un article par son identifiant
       operationId: getArticleUsingPOST
@@ -996,6 +1089,9 @@ paths:
       x-codegen-request-body-name: articleRequest
   /consult/lawDecree:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu texte type LODA
       description: Récupère le contenu d'un texte de type LODA à partir de son identifiant
         et de sa date de vigueur
@@ -1029,6 +1125,9 @@ paths:
       x-codegen-request-body-name: lawDecreeConsultRequest
   /consult/kaliContIdcc:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu des conteneurs des conventions collectives
       description: Récupère le contenu d'un conteneur du fonds des conventions collectives
         (KALI) à partir de son idcc
@@ -1062,6 +1161,9 @@ paths:
       x-codegen-request-body-name: request
   /suggest:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Suggestions de résultats
       description: Effectue les diverses suggestions sur les différents fonds à partir
         d'une chaine de caractères et de la liste des fonds sélectionnés
@@ -1095,6 +1197,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/getArticleByCid:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu des versions d'un article
       description: Récupère la liste des articles par leur identifiant commun
       operationId: getArticleByCidUsingPOST
@@ -1127,6 +1232,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/eliAndAliasRedirectionTexte:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu des textes du JO.
       description: Récupère le contenu d'un texte du fonds JORF à partir de son idEli
         ou idEliAlias
@@ -1160,6 +1268,9 @@ paths:
       x-codegen-request-body-name: jorfConsultWithIdEliAliasRequest
   /misc/yearsWithoutTable:
     get:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Liste des années sans table
       description: Permet de récupérer l'ensemble des années sans table annuelle
       operationId: getYearsWithoutTableUsingGET
@@ -1181,6 +1292,9 @@ paths:
           content: {}
   /list/code:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Liste paginée des codes
       description: Récupère les codes dans une liste paginée
       operationId: listCodeUsingPOST
@@ -1213,6 +1327,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/acco:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu d'un accord d'entreprise
       description: Récupère le contenu d'un accord d'entreprise à partir de son identifiant
       operationId: displayAccoUsingPOST
@@ -1245,6 +1362,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/cnil:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu texte fonds CNIL
       description: Récupère le contenu d'un texte du fonds CNIL à partir de son identifiant
       operationId: displayCnilUsingPOST
@@ -1277,6 +1397,9 @@ paths:
       x-codegen-request-body-name: request
   /search/ping:
     get:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Teste le controller
       description: Retourne pong
       operationId: pingUsingGET_4
@@ -1298,6 +1421,9 @@ paths:
           content: {}
   /chrono/textCidAndElementCid:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Extrait d'une version d'un texte
       description: Récupère un extrait (section ou article) d'une version spécifique
         d'un texte à partir des identifiants du texte et de l'extrait (section ou
@@ -1332,6 +1458,9 @@ paths:
       x-codegen-request-body-name: request
   /suggest/ping:
     get:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Teste le controller
       description: Retourne pong
       operationId: pingUsingGET_5
@@ -1353,6 +1482,9 @@ paths:
           content: {}
   /consult/jorfPart:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu texte fonds JORF
       description: Récupère le contenu d'un texte du fonds JORF à partir de l'identifiant
         d'une de ses sections ou articles
@@ -1386,6 +1518,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/circulaire:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Contenu d'une circualire
       description: Récupère le contenu d'une circulaire à partir de son identifiant
       operationId: displayCirculaireUsingPOST
@@ -1418,6 +1553,9 @@ paths:
       x-codegen-request-body-name: request
   /consult/relatedLinksArticle:
     post:
+      security:
+        - OAuthImplicit: [openid]
+        - OAuthAccessCode: [openid]
       summary: Liste des liens relatifs d'un article
       description: Permet de récupérer les liens relatifs d'un article donné
       operationId: displayRelatedLinksArticleUsingPOST
