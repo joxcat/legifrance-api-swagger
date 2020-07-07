@@ -1,0 +1,6053 @@
+openapi: 3.0.1
+info:
+  title: DILA - Légifrance Beta
+  description: >
+    Afin de faciliter la réutilisation des données juridiques, la DILA met à disposition du public une API de Légifrance en version bêta.<br />
+    Ce document a pour objectif de décrire les méthodes de l'API Légifrance, présentées à l’aide du framework Swagger.<br />
+    Vous pouvez également télécharger une [documentation complémentaire](https://beta.legifrance.gouv.fr/contenu/Media/Files/pied-de-page/description-des-tris-et-filtres-de-l-api.xlsx) ainsi que des [exemples d’utilisation](https://beta.legifrance.gouv.fr/contenu/Media/Files/pied-de-page/exemples-d-utilisation-de-l-api.docx) de l'API.<br />
+    <br />
+    Cet accès vous permet d’expérimenter l'API sur un environnement de test et de vous familiariser avec les différentes méthodes.<br />
+    <br />
+    À noter<br />
+    - L'environnement de test peut être indisponible.<br />
+    - Les appels sont limités par quotas.<br />
+    <br />
+    Les mises à jour correctives et évolutives sont réalisées dans un premier temps sur cet environnement. La version de l'API correspond à celle du site bêta de Légifrance.<br />
+    <br />
+    Les données ne sont pas identiques à celles de Production.<br />
+    <br />
+    L'API Légifrance est mise à disposition sous [conditions](https://beta.legifrance.gouv.fr/contenu/pied-de-page/open-data-et-api).<br />
+    <br />
+    Pour toute question, vous pouvez écrire à l'adresse retours-legifrance-modernise@dila.gouv.fr.<br />
+  version: 0.3.1
+servers:
+- url: https://api.aife.economie.gouv.fr/dila/legifrance-beta/lf-engine-app
+security:
+- OAuthImplicit:
+  - openid
+- OAuthAccessCode:
+  - openid
+paths:
+  /chrono/textCid/{textCid}:
+    get:
+      summary: Vérifie si un texte possède des versions
+      description: Indique si un texte possède des versions chrono à partir de l'identifiant
+        du texte
+      operationId: hasVersionByTextCidUsingGET
+      parameters:
+      - name: textCid
+        in: path
+        description: Chronical ID
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HasChronolegiResponse'
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+  /consult/jorfCont:
+    post:
+      summary: Liste de sommaire JORF
+      description: Récupère la liste de conteneurs/sommaires JORF
+      operationId: displayJorfContUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JorfContConsultRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetJosResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/dossierLegislatif:
+    post:
+      summary: Contenu d'un dossier législatif
+      description: Récupère le contenu d'un dossier legislatif par son identifiant
+      operationId: displayDossierLegislatifUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DossierLegislatifRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultDossierLegislatifResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /list/docsAdmins:
+    post:
+      summary: Liste des documents administratifs
+      description: Permet de récupérer la liste des documents administratifs pour
+        une période donnée
+      operationId: listDocsAdminsUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocsAdminsListRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocsAdminsListResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /suggest/acco:
+    post:
+      summary: Suggestions des siret et raisons sociale pour les accords
+      description: Effectue les suggestions siret et raisons sociales sur les accords
+        d'entreprise à partir d'une chaine de caractères
+      operationId: siretRcSuggestUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuggestRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuggestAccoResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/juri:
+    post:
+      summary: Contenu texte fonds JURI
+      description: Récupère le contenu d'un texte du fonds JURI à partir de son identifiant
+      operationId: displayJuriUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JuriConsultRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultJuriTextResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /chrono/textCid:
+    post:
+      summary: Version d'un texte
+      description: Récupère une version spécifique d'un texte à partir de l'identifiant
+        du texte
+      operationId: getVersionByTextCidUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChronoLegiTextRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChronolegiResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/getTables:
+    post:
+      summary: Liste des tables annuelles
+      description: Permet de récupérer l'ensemble des tables annuelles pour une période
+        donnée
+      operationId: getTablesUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TableRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTableResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/legiPart:
+    post:
+      summary: Contenu texte fonds LEGI
+      description: Récupère le contenu d'un texte du fonds LEGI à partir de son identifiant
+        et de sa date de vigueur
+      operationId: displayLegiPartUsingPOST
+      requestBody:
+        description: legiConsultRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegiConsultRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultTextResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: legiConsultRequest
+  /misc/commitId:
+    get:
+      summary: Informations déploiement et versionning
+      description: Récupère les informations relatives au déploiement et au versionning
+        de l'application
+      operationId: getCommitIdUsingGET
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+  /list/dossiersLegislatifs:
+    post:
+      summary: Liste paginée des dossiers législatifs
+      description: Récupère les dossiers législatifs dans une liste paginée
+      operationId: listDossiersLegislatifsUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DossiersLegislatifsRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DossiersLegislatifsListResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /misc/datesWithoutJo:
+    get:
+      summary: Liste des dates sans JO
+      description: Permet de récupérer l'ensemble des dates pour lesquelles il n'existe
+        pas de Journal Officiel
+      operationId: getDatesWithoutJoUsingGET
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatesWithNoJoResponse'
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+  /list/conventions:
+    post:
+      summary: Liste paginée des conventions
+      description: Récupère les conventions dans une liste paginée
+      operationId: listConventionsUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConventionsListRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConventionsListResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/jorf:
+    post:
+      summary: Contenu texte fonds JORF
+      description: Récupère le contenu d'un texte du fonds JORF à partir de son identifiant
+      operationId: displayJorfUsingPOST
+      requestBody:
+        description: jorfConsultRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JorfConsultRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultJorfResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: jorfConsultRequest
+  /consult/lastNJo:
+    post:
+      summary: Derniers journaux officels
+      description: Récupère les derniers journaux officiels
+      operationId: getLastNJoUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LastNElementRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetJorfContResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/ping:
+    get:
+      summary: Teste le controller
+      description: Retourne pong
+      operationId: pingUsingGET_1
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+  /consult/kaliArticle:
+    post:
+      summary: Contenu des conventions collectives depuis un article
+      description: Récupère le contenu d'un texte du fonds des conventions collectives
+        (KALI) à partir de l'identifiant de son article
+      operationId: displayKaliArticleUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KaliTextConsultArticleRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultKaliTextResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /list/loda:
+    post:
+      summary: Liste paginée des textes de type LODA
+      description: Récupère les éléments de type LODA dans une liste paginée
+      operationId: listLODAUsingPOST
+      requestBody:
+        description: Critères de pagination de la liste LODA
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LODAListRequest'
+        required: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LODAListResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/kaliSection:
+    post:
+      summary: Contenu des conventions collectives depuis une section
+      description: Récupère le contenu d'un texte du fonds des conventions collectives
+        (KALI) à partir de l'identifiant de sa section
+      operationId: displayKaliSectionUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KaliTextConsultSectionRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultKaliTextResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/kaliCont:
+    post:
+      summary: Contenu des conteneurs des conventions collectives
+      description: Récupère le contenu d'un conteneur du fonds des conventions collectives
+        (KALI) à partir de son identifiant
+      operationId: displayKaliContUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KaliContConsultRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultKaliContResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /list/legislatures:
+    post:
+      summary: Liste des législatures
+      description: Récupère les législatures
+      operationId: listLegislaturesUsingPOST
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegislaturesListResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+  /search/nearestVersion:
+    post:
+      summary: Récupération des infos de la version la plus proche
+      description: Permet de récupérer le titre et la section de la version d'un texte
+        la plus proche d'une date donnée
+      operationId: searchNearestVersionUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchNearestVersionRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchNearestVersionResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/code/tableMatieres:
+    post:
+      summary: Contenu table des matières d'un CODE
+      description: Récupère la table des matières d'un texte de type CODE à partir
+        de son identifiant et de sa date de vigueur
+      operationId: displayCodeTableOfContentsUsingPOST
+      requestBody:
+        description: codeConsultRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CodeConsultRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultTextResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: codeConsultRequest
+  /consult/sameNumArticle:
+    post:
+      summary: Liste des articles ayant eu le même numéro
+      description: Permet de récupérer les liens des articles ayant eu le même numéro
+        que l'article en cours dans des versions précédentes du texte
+      operationId: displaySameNumArticleUsingPOST
+      requestBody:
+        description: sameNumArticleRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SameNumArticleRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionsRevisionArticleResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: sameNumArticleRequest
+  /consult/concordanceLinksArticle:
+    post:
+      summary: Liste des liens de concordance d'un article
+      description: Permet de récupérer les liens de concordance d'un article
+      operationId: displayConcordanceLinksArticleUsingPOST
+      requestBody:
+        description: concordanceLinksRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConcordanceLinksRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SectionsRevisionArticleResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: concordanceLinksRequest
+  /consult/code:
+    post:
+      summary: Contenu texte type CODE
+      description: Récupère le contenu d'un texte de type CODE à partir de son identifiant
+        et de sa date de vigueur
+      operationId: displayCodeUsingPOST
+      requestBody:
+        description: codeConsultRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CodeConsultRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultTextResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: codeConsultRequest
+  /search:
+    post:
+      summary: Recherche générique des documents indexés
+      description: Permet de faire une recherche de documents. On peut préciser le
+        fond, les filtres textuels, les facettes et la pagination
+      operationId: searchUsingPOST
+      requestBody:
+        description: jsonRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequestDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponseDTO'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: jsonRequest
+  /list/ping:
+    get:
+      summary: Teste le controller
+      description: Retourne pong
+      operationId: pingUsingGET_3
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+  /chrono/ping:
+    get:
+      summary: Teste le controller
+      description: Retourne pong
+      operationId: pingUsingGET
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+  /consult/kaliText:
+    post:
+      summary: Contenu des conventions collectives
+      description: Récupère le contenu d'un texte du fonds des conventions collectives
+        (KALI) à partir de son identifiant
+      operationId: displayKaliTextUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KaliTextConsultRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultKaliTextResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/getArticle:
+    post:
+      summary: Contenu d'un article
+      description: Récupère un article par son identifiant
+      operationId: getArticleUsingPOST
+      requestBody:
+        description: articleRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetArticleResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: articleRequest
+  /consult/lawDecree:
+    post:
+      summary: Contenu texte type LODA
+      description: Récupère le contenu d'un texte de type LODA à partir de son identifiant
+        et de sa date de vigueur
+      operationId: displayLawDecreeUsingPOST
+      requestBody:
+        description: lawDecreeConsultRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LawDecreeConsultRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultTextResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: lawDecreeConsultRequest
+  /consult/kaliContIdcc:
+    post:
+      summary: Contenu des conteneurs des conventions collectives
+      description: Récupère le contenu d'un conteneur du fonds des conventions collectives
+        (KALI) à partir de son idcc
+      operationId: displayKaliContByIdccUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KaliContConsultIdccRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultKaliContResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /suggest:
+    post:
+      summary: Suggestions de résultats
+      description: Effectue les diverses suggestions sur les différents fonds à partir
+        d'une chaine de caractères et de la liste des fonds sélectionnés
+      operationId: crossSearchUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuggestSupplyRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuggestResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/getArticleByCid:
+    post:
+      summary: Contenu des versions d'un article
+      description: Récupère la liste des articles par leur identifiant commun
+      operationId: getArticleByCidUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ArticleCidRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetListArticleResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/eliAndAliasRedirectionTexte:
+    post:
+      summary: Contenu des textes du JO.
+      description: Récupère le contenu d'un texte du fonds JORF à partir de son idEli
+        ou idEliAlias
+      operationId: getJoCidWithEliOrAliasUsingPOST
+      requestBody:
+        description: jorfConsultWithIdEliAliasRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JorfConsultWithIdEliAliasRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultJorfResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: jorfConsultWithIdEliAliasRequest
+  /misc/yearsWithoutTable:
+    get:
+      summary: Liste des années sans table
+      description: Permet de récupérer l'ensemble des années sans table annuelle
+      operationId: getYearsWithoutTableUsingGET
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/YearsWithNoTableResponse'
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+  /list/code:
+    post:
+      summary: Liste paginée des codes
+      description: Récupère les codes dans une liste paginée
+      operationId: listCodeUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CodeListRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CodeListResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/acco:
+    post:
+      summary: Contenu d'un accord d'entreprise
+      description: Récupère le contenu d'un accord d'entreprise à partir de son identifiant
+      operationId: displayAccoUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccoConsultRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultAccoResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/cnil:
+    post:
+      summary: Contenu texte fonds CNIL
+      description: Récupère le contenu d'un texte du fonds CNIL à partir de son identifiant
+      operationId: displayCnilUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CnilConsultRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultCnilTextResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /search/ping:
+    get:
+      summary: Teste le controller
+      description: Retourne pong
+      operationId: pingUsingGET_4
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+  /chrono/textCidAndElementCid:
+    post:
+      summary: Extrait d'une version d'un texte
+      description: Récupère un extrait (section ou article) d'une version spécifique
+        d'un texte à partir des identifiants du texte et de l'extrait (section ou
+        article)
+      operationId: getVersionByTextCidAndElementCidUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChronoLegiArticleRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChronolegiResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /suggest/ping:
+    get:
+      summary: Teste le controller
+      description: Retourne pong
+      operationId: pingUsingGET_5
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+  /consult/jorfPart:
+    post:
+      summary: Contenu texte fonds JORF
+      description: Récupère le contenu d'un texte du fonds JORF à partir de l'identifiant
+        d'une de ses sections ou articles
+      operationId: displayJorfPartUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JorfConsultRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultJorfResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/circulaire:
+    post:
+      summary: Contenu d'une circualire
+      description: Récupère le contenu d'une circulaire à partir de son identifiant
+      operationId: displayCirculaireUsingPOST
+      requestBody:
+        description: request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CirculaireConsultRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsultCirculaireResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: request
+  /consult/relatedLinksArticle:
+    post:
+      summary: Liste des liens relatifs d'un article
+      description: Permet de récupérer les liens relatifs d'un article donné
+      operationId: displayRelatedLinksArticleUsingPOST
+      requestBody:
+        description: relatedLinksArticleRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RelatedLinksArticleRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RelatedLinksArticleResponse'
+        '201':
+          description: Created
+          content: {}
+        '401':
+          description: Unauthorized
+          content: {}
+        '403':
+          description: Forbidden
+          content: {}
+        '404':
+          description: Not Found
+          content: {}
+      x-codegen-request-body-name: relatedLinksArticleRequest
+components:
+  schemas:
+    KaliTextConsultArticleRequest:
+      title: KaliTextConsultArticleRequest
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant du texte ou d'un de ses éléments enfants (section/article)
+          example: KALIARTI000005833238
+      description: Requête de consultation d'un texte d'une convention collective
+    SuggestRequest:
+      title: SuggestRequest
+      type: object
+      properties:
+        searchText:
+          type: string
+          description: Texte à rechercher
+          example: mariage
+      description: Requête de suggestion d'une recherche textuelle
+    DossierResult:
+      title: DossierResult
+      type: object
+      properties:
+        idTexte:
+          type: string
+          description: Identifiant du texte
+          example: JORFTEXT000037882341
+        libelleTexte:
+          type: string
+          description: Titre du texte
+          example: LOI n° 2018-1317 du 28 décembre 2018 de finances pour 2019
+      description: Objet représentant un dossier
+    GetArticleResponse:
+      title: GetArticleResponse
+      type: object
+      properties:
+        article:
+          $ref: '#/components/schemas/Article'
+        dereferenced:
+          type: boolean
+          description: Identifie si le contenu est référençable par les robots d'indexation
+          example: true
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+      description: réponse de consultation d'un article
+    ModificateurDTO:
+      title: ModificateurDTO
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant
+          example: LEGIARTI000006687518
+        idParent:
+          type: string
+          description: Identifiant de l'élément parent du modificateur (texte/section
+            ...)
+        idText:
+          type: string
+          description: Identifiant du texte du modificateur
+          example: LEGITEXT000006072665
+        name:
+          type: string
+          description: Titre du modificateur
+          example: Code de la santé publique - art. L2211-1 (V)
+        nature:
+          type: string
+          description: Nature
+          example: CODE
+          enum:
+          - LODA
+          - JORF
+          - CODE
+          - KALI
+          - JORFCONT
+      description: Objet représentant un modificateur
+    Legislature:
+      title: Legislature
+      type: object
+      properties:
+        dateDebut:
+          type: string
+          description: Date de début
+          format: date-time
+        dateFin:
+          type: string
+          description: Date de fin
+          format: date-time
+        id:
+          type: string
+          description: Identifiant
+          example: "14"
+        libelle:
+          type: string
+          description: libellé
+          example: XIVème législature
+      description: Objet représentant une législature
+    LODAListResponse:
+      title: LODAListResponse
+      type: object
+      properties:
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        legalStatus:
+          $ref: '#/components/schemas/Facet'
+        natures:
+          $ref: '#/components/schemas/Facet'
+        results:
+          type: array
+          description: Liste des résultats de la page
+          items:
+            $ref: '#/components/schemas/LODAListResult'
+        totalResultNumber:
+          type: integer
+          description: Nombre de résultats
+          format: int64
+          example: 12
+      description: Résultat d'une requête paginée pour lister les textes Lois, Décrets,
+        Arrêtés
+    SearchResponseDTO:
+      title: SearchResponseDTO
+      type: object
+      properties:
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        facets:
+          type: array
+          description: Liste des facettes liées
+          items:
+            $ref: '#/components/schemas/Facet'
+        results:
+          type: array
+          description: Liste des résultats de la page
+          items:
+            $ref: '#/components/schemas/SearchResult'
+        totalResultNumber:
+          type: integer
+          description: Nombre de résultats
+          format: int64
+          example: 1560
+        typePagination:
+          type: string
+          description: Type de pagination. Spécifique pour les recherches dans les
+            articles d'un texte spécifique, dans les autres cas la valeur sera toujours
+            DEFAULT.
+          example: DEFAULT
+          enum:
+          - DEFAUT
+          - ARTICLE
+      description: Page des résultats demandée lors d'une recherche paginée
+    GetJorfContResponse:
+      title: GetJorfContResponse
+      type: object
+      properties:
+        containers:
+          type: array
+          description: Liste des N derniers conteneurs
+          items:
+            $ref: '#/components/schemas/Conteneur'
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        totalNbResult:
+          type: integer
+          description: Nombre de résultats
+          format: int64
+          example: 5
+      description: Réponse à une requête de N derniers JO
+    RelatedLinksArticleRequest:
+      title: RelatedLinksArticleRequest
+      required:
+      - articleId
+      type: object
+      properties:
+        articleId:
+          type: string
+          description: Identifiant de l'article
+          example: LEGIARTI000032207188
+      description: requête de récupération des liens de citation d'un article
+    ConsultKaliTextResponse:
+      title: ConsultKaliTextResponse
+      type: object
+      properties:
+        alias:
+          type: string
+          description: Alias
+        articles:
+          type: array
+          description: Liste des articles racine du texte. La liste est ordonnée
+          items:
+            $ref: '#/components/schemas/ConsultArticle'
+        cid:
+          type: string
+          description: Chronical ID du texte
+          example: JORFTEXT000000882738
+        codesNomenclature:
+          type: array
+          description: Liste des codes de nomenclature
+          items:
+            type: string
+        conditionDiffere:
+          type: string
+          description: Condition différée
+        conteneurs:
+          type: array
+          description: Liste des conteneurs du texte
+          items:
+            $ref: '#/components/schemas/Conteneur'
+        dateDebutVersion:
+          type: string
+          description: Date de début de la version
+        dateFinVersion:
+          type: string
+          description: Date de fin de la version
+        dateParution:
+          type: string
+          description: Date de parution
+          format: date-time
+        dereferenced:
+          type: boolean
+          description: Identifie si le contenu est référençable par les robots d'indexation
+          example: true
+        dossiersLegislatifs:
+          type: array
+          description: Liste des dossiers legislatifs
+          items:
+            $ref: '#/components/schemas/DossierLegislatif'
+        eli:
+          type: string
+          description: identifiant européen de la ‎législation ou European Legislation
+            Identifier
+          example: /eli/arrete/2019/1/18/TREK1901124A/jo/texte
+        etat:
+          type: string
+          description: Etat du texte
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        id:
+          type: string
+          description: Identifiant du texte
+          example: LEGITEXT000006070994_01-08-2016
+        idConteneur:
+          type: string
+          description: Identifiant du conteneur du texte lorsqu'il en existe un.
+        inap:
+          type: boolean
+          description: INAP
+        jorfText:
+          type: string
+          description: Titre du texte correspondant
+        jurisDate:
+          type: string
+          description: Date d'état juridique
+        jurisState:
+          type: string
+          description: Etat juridique du texte
+        liens:
+          type: array
+          description: Liens
+          items:
+            $ref: '#/components/schemas/TexteLien'
+        modifDate:
+          type: string
+          description: Date de modification
+        motsCles:
+          type: array
+          description: Liste des mots clés
+          example:
+          - LIEN FAMILIAL
+          - CENTRES SOCIAUX
+          items:
+            type: string
+        nature:
+          type: string
+          description: Nature
+        nor:
+          type: string
+          description: Numéro NOR
+          example: NCCX8900064L
+        nota:
+          type: string
+          description: Nota
+        notice:
+          type: string
+          description: Notice
+        numParution:
+          type: string
+          description: Numéro de parution
+        numeroBo:
+          type: string
+          description: Numéro Bulletin Officiel
+        observations:
+          type: string
+          description: Observations
+        originePubli:
+          type: string
+          description: Origine de la publication
+        prepWork:
+          type: string
+          description: Travaux préparatoires
+        rectificatif:
+          type: string
+          description: Rectificatif
+        resume:
+          type: string
+          description: Résumé
+        sections:
+          type: array
+          description: Liste des sections de premier niveau du texte. La liste est
+            ordonnée
+          items:
+            $ref: '#/components/schemas/ConsultSection'
+        signataires:
+          $ref: '#/components/schemas/SignataireKali'
+        signers:
+          type: string
+          description: Signataires
+        textAbroge:
+          type: boolean
+          description: Indique si le texte est abrogé
+        textNumber:
+          type: string
+          description: Numéro de texte
+        title:
+          type: string
+          description: Titre du texte
+          example: Loi contenant organisation du notariat (loi 25 ventôse an XI)
+        typeTexte:
+          type: string
+          description: Type de texte
+          example: TEXTE_BASE
+        visa:
+          type: string
+          description: Visas
+      description: Réponse à une requête de consultation d'un texte d'une convention
+        collective
+    HasChronolegiResponse:
+      title: HasChronolegiResponse
+      type: object
+      properties:
+        chronolegiExists:
+          type: boolean
+          description: Indique si un versionning existe
+          example: true
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+      description: Réponse indiquant s'il existe un chronolegi (plusieurs versions)
+        pour le texte.
+    TexteSimple:
+      title: TexteSimple
+      type: object
+      properties:
+        annePublicationBulletin:
+          type: string
+          description: Année de publication au bulletin
+        appliGeo:
+          type: string
+          description: Portée géographique
+          example: NATIONAL
+        autorite:
+          type: string
+          description: Autorité
+        avocatGl:
+          type: string
+          description: Avocat général
+        avocats:
+          type: string
+          description: Avocats
+        cid:
+          type: string
+          description: Chronical ID du texte
+        citationJp:
+          type: string
+          description: Citations jurisprudentielles
+        citationJpHtml:
+          type: string
+          description: Texte HTML des citations jurisprudentielles
+        codesNomenclatures:
+          type: array
+          description: Liste des codes de nomenclature
+          items:
+            type: string
+        commissaire:
+          type: string
+          description: Commissaire
+        conditionDiffere:
+          type: string
+          description: Condition de différé
+          example: Le présent avenant entrera en vigueur le premier jour du mois suivant
+            la date de parution du Journal officiel de son arrêté d'extension.
+        conteneurs:
+          type: array
+          description: Liste des conteneurs
+          items:
+            $ref: '#/components/schemas/Conteneur'
+        dateDebut:
+          type: string
+          description: Date de début
+          format: date-time
+        dateDerniereModif:
+          type: string
+          description: Date de dernière modification
+          format: date-time
+        dateFin:
+          type: string
+          description: Date de fin
+          format: date-time
+        dateJo:
+          type: string
+          description: Date du JO
+          format: date-time
+        dateLoiDef:
+          type: string
+          description: Date de signature de la loi déférée
+          format: date-time
+        datePubli:
+          type: string
+          description: Date de publication
+          format: date-time
+        datePubliComputed:
+          type: string
+          description: Date de publication si la date est valide, vide autrement (elle
+            vaut null si la date du texte est null ou >= 2222-01-01)
+          format: date-time
+        dateTexte:
+          type: string
+          description: Date du texte
+          format: date-time
+        dateTexteComputed:
+          type: string
+          description: Date du texte si la date est valide, vide autrement (elle vaut
+            null si la date du texte est null ou >= 2222-01-01)
+          format: date-time
+        dateVersement:
+          type: string
+          description: Date de versement
+          format: date-time
+        decisionAttaquee:
+          $ref: '#/components/schemas/DecisionAttaquee'
+        dossiersLegislatifs:
+          type: array
+          description: Liste des dossiers législatifs
+          items:
+            $ref: '#/components/schemas/DossierLegislatif'
+        ecli:
+          type: string
+          description: ECLI
+        emetteur:
+          type: string
+          description: Emetteur
+        etat:
+          type: string
+          description: Etat juridique
+        formation:
+          type: string
+          description: formation
+          example: JX
+        id:
+          type: string
+          description: Identifiant du texte
+          example: JURITEXT000037999394
+        idConteneur:
+          type: string
+          description: Identifiant du conteneur
+        idEli:
+          type: string
+          description: Lien ELI
+        idEliAlias:
+          type: string
+          description: Alias ELI
+        idTechInjection:
+          type: string
+          description: Identifiant technique permettant le suivi d'injection du mode
+            delta
+        idTexteJo:
+          type: string
+          description: Identifiant du JO
+        inap:
+          type: boolean
+          description: INAP
+        juridiction:
+          type: string
+          description: Juridiction
+          example: Cour d'appel de Nancy
+        juridictionJudiciaire:
+          type: string
+          description: Juridiction judiciaire
+          example: Juridictions d'appel
+        lienJo:
+          type: string
+          description: Lien vers le JO
+        liens:
+          type: array
+          description: Liste de liens vers d'autres textes
+          items:
+            $ref: '#/components/schemas/TexteLien'
+        ministere:
+          type: string
+          description: Ministere
+        motsCles:
+          type: array
+          description: Liste des mots clés
+          items:
+            type: string
+        nature:
+          type: string
+          description: Nature du texte
+          example: ARRET
+        natureDelib:
+          type: string
+          description: Nature de la délibération
+          example: AUTORISATION DE TRANSFERTS
+        natureJuridiction:
+          type: string
+          description: Nature de la juridiction
+          example: Cour d'appel
+        natureNumero:
+          type: string
+        natureQualifiee:
+          type: string
+          description: Nature qualifiée
+        nor:
+          type: string
+          description: Numéro NOR
+        nota:
+          type: string
+          description: Notas
+        notaHtml:
+          type: string
+          description: Texte HTML des notas
+        notice:
+          type: string
+          description: Notice
+        noticeHtml:
+          type: string
+          description: Texte HTML de la notice
+        num:
+          type: string
+          description: Numéro du texte
+        numJo:
+          type: string
+          description: Numéro du JO
+        numLoiDef:
+          type: string
+          description: Numéro de la loi déférée
+          example: 2001-419
+        numParution:
+          type: string
+          description: Numéro de parution
+        numTexteJo:
+          type: string
+          description: Numéro du texte JO
+        numeroAffaire:
+          type: array
+          description: Liste des numéros d'affaire
+          example:
+          - 17/030701
+          - 17/030702
+          items:
+            type: string
+        numeroBo:
+          type: string
+          description: Numéro BO
+        numeroPublicationBulletin:
+          type: string
+          description: Numéro de publication au bulletin
+        numsequence:
+          type: string
+          description: Numéro de séquence
+        observations:
+          type: string
+          description: Observations d'une directive européenne
+        origine:
+          type: string
+          description: Origine du texte
+          example: JURI
+        originePubli:
+          type: string
+          description: Origine de la publication
+        president:
+          type: string
+          description: Président
+        provenance:
+          type: string
+          description: provenance
+          example: CAPP
+        publicationRecueil:
+          type: string
+          description: Indique la publication au recueil Lebon
+          example: C
+        rapporteur:
+          type: string
+          description: Rapporteur
+        rectificatif:
+          type: string
+          description: Rectificatif d'une directive européenne
+        refInjection:
+          type: string
+          description: référence permettant le suivi d'injection du mode delta
+        relevantDate:
+          type: string
+          description: Contient la date du texte si elle existe (!= null && != 2999-01-01)
+            sinon contient la date de publication  pour les texte
+          format: date-time
+        resume:
+          type: string
+          description: Résumé d'une directive européenne
+        resumeHtml:
+          type: string
+          description: Texte HTML des résumés de directive européenne
+        siegeAppel:
+          type: string
+          description: Siège d'appel
+          example: NANCY
+        signataireKali:
+          $ref: '#/components/schemas/SignataireKali'
+        signataires:
+          type: string
+          description: Signataires
+        signatairesHtml:
+          type: string
+          description: Texte HTML des signataires
+        solution:
+          type: string
+          description: Solution
+        sommaire:
+          type: array
+          description: Liste des éléments de sommaire
+          items:
+            $ref: '#/components/schemas/TexteSommaire'
+        texte:
+          type: string
+          description: Contenu du texte
+        texteHtml:
+          type: string
+          description: Texte au format HTML
+        titre:
+          type: string
+          description: Titre du texte
+        titreJo:
+          type: string
+          description: Titre du JO lié
+        titreLoiDef:
+          type: string
+          description: Titre de la loi déférée
+        titreLong:
+          type: string
+          description: Titre long du texte
+        travauxPreparatoires:
+          type: string
+          description: Travaux préparatoires
+        travauxPreparatoiresHtml:
+          type: string
+          description: Texte HTML des travaux préparatoires
+        typeControleNormes:
+          type: string
+          description: Type de contrôle
+          example: Contrôle de constitutionnalité
+        typeDecision:
+          type: string
+          description: Type de décision
+        typePublicationBulletin:
+          type: string
+          description: Type de publication
+        typeTexte:
+          type: string
+          description: Type de texte
+          example: TEXTE_BASE
+          enum:
+          - TEXTE_ATTACHE
+          - TEXTE_BASE
+          - TEXTE_SALAIRE
+          - TEXTE_EXTENSION
+        urlCC:
+          type: string
+          description: Chemin vers la convention collective
+        version:
+          type: string
+          description: Version
+        visas:
+          type: string
+          description: Visas
+        visasHtml:
+          type: string
+          description: Texte HTML des visas
+      description: Objet représentant un texte simple
+    ArticleVersion:
+      title: ArticleVersion
+      type: object
+      properties:
+        dateDebut:
+          type: string
+          description: Date de début de la version
+          format: date-time
+        dateFin:
+          type: string
+          description: Date de fin de la version
+          format: date-time
+        etat:
+          type: string
+          description: Etat juridique
+        id:
+          type: string
+          description: Identifiant de l'article
+        numero:
+          type: string
+          description: Numéro de l'article
+        ordre:
+          type: integer
+          description: Numéro d'ordre de l'article. Sert au tri des articles au sein
+            de leur élément parent (section ou texte)
+          format: int32
+        version:
+          type: string
+          description: Version
+      description: Objet représentant les métadonnées d'une version d'un article
+    DossierLegislatif:
+      title: DossierLegislatif
+      type: object
+      properties:
+        ancienId:
+          type: string
+          description: Ancien ID
+          example: JORFDOLE000028196699
+        arborescence:
+          $ref: '#/components/schemas/Arborescence'
+        dateCreation:
+          type: string
+          description: Date de création
+          format: date-time
+        dateDerniereModification:
+          type: string
+          description: Date de dernière modification
+          format: date-time
+        dossiers:
+          type: array
+          description: Liste des dossiers
+          items:
+            $ref: '#/components/schemas/Dossier'
+        echeancier:
+          type: string
+          description: Echéancier
+        exposeMotif:
+          type: string
+          description: Texte html des motifs
+        id:
+          type: string
+          description: Identifiant du dossier
+          example: JORFDOLE000028196681
+        idTechInjection:
+          type: string
+          description: Identifiant technique de l'élément injecté
+        legislature:
+          $ref: '#/components/schemas/Legislature'
+        nature:
+          type: string
+          description: nature
+        origine:
+          type: string
+          description: Origine
+          example: JORF
+        refInjection:
+          type: string
+          description: Référence technique permettant d'identifier la date d'injection
+        titre:
+          type: string
+          description: Titre du dossier legislatif
+          example: LOI n° 2013-1279 du 29 décembre 2013 de finances rectificative
+            pour 2013
+        type:
+          type: string
+          description: type
+          example: LOI_PUBLIEE
+        url:
+          type: string
+          description: chemin relatif vers le fichier xml
+      description: Objet représentant un dossier législatif
+    Lien:
+      title: Lien
+      type: object
+      properties:
+        data:
+          type: string
+          description: Texte associé
+        id:
+          type: string
+          description: Identifiant du lien
+          example: "1415810924079"
+        libelle:
+          type: string
+          description: Libellé
+          example: Dossier législatif du Sénat
+        lien:
+          type: string
+          description: Lien vers le dossier législatif
+          example: http://www.senat.fr/dossier-legislatif/pjl14-096.html
+      description: Objet représentant un lien dans l'arborescence d'un dossier législatif
+    DossierLegislatifResult:
+      title: DossierLegislatifResult
+      type: object
+      properties:
+        dateCreation:
+          type: string
+          description: Date de création
+          example: 2019-01-21
+        dateDerniereModification:
+          type: string
+          description: Date de dernière modification
+          example: 2019-01-21
+        dossiers:
+          type: array
+          description: Liste des dossiers
+          items:
+            $ref: '#/components/schemas/DossierResult'
+        id:
+          type: string
+          description: Identifiant
+          example: JORFDOLE000037460423
+        titre:
+          type: string
+          description: Titre
+          example: LOI n° 2019-30 du 20 janvier 2019 habilitant le Gouvernement à
+            prendre par ordonnance les mesures de préparation au retrait du Royaume-Uni
+            de l'Union européenne
+        type:
+          type: string
+          description: Type
+          example: LOI_PUBLIEE
+      description: Objet représentant le résultat d'un dossier législatif
+    AdressePostale:
+      title: AdressePostale
+      type: object
+      properties:
+        codePostal:
+          type: string
+          description: Code postal
+          example: "75005"
+        ville:
+          type: string
+          description: Ville
+          example: PARIS
+      description: Objet représentant une adresse postale
+    ConsultJorfResponse:
+      title: ConsultJorfResponse
+      type: object
+      properties:
+        alias:
+          type: string
+          description: Alias
+        articles:
+          type: array
+          description: Liste des articles racine du texte. La liste est ordonnée
+          items:
+            $ref: '#/components/schemas/ConsultArticle'
+        cid:
+          type: string
+          description: Chronical ID du texte
+          example: JORFTEXT000000882738
+        dateDebutVersion:
+          type: string
+          description: Date de début de la version
+        dateFinVersion:
+          type: string
+          description: Date de fin de la version
+        dateParution:
+          type: string
+          description: Date de parution
+          format: date-time
+        dereferenced:
+          type: boolean
+          description: Identifie si le contenu est référençable par les robots d'indexation
+          example: true
+        dossiersLegislatifs:
+          type: array
+          description: Liste des dossiers legislatifs
+          items:
+            $ref: '#/components/schemas/DossierLegislatif'
+        eli:
+          type: string
+          description: identifiant européen de la ‎législation ou European Legislation
+            Identifier
+          example: /eli/arrete/2019/1/18/TREK1901124A/jo/texte
+        etat:
+          type: string
+          description: Etat du texte
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        id:
+          type: string
+          description: Identifiant du texte
+          example: LEGITEXT000006070994_01-08-2016
+        idConteneur:
+          type: string
+          description: Identifiant du conteneur du texte lorsqu'il en existe un.
+        inap:
+          type: boolean
+          description: INAP
+        jorfFileMetadata:
+          type: array
+          description: Liste des métadonnées des fichiers attachés au document
+          items:
+            $ref: '#/components/schemas/FileMetadata'
+        jorfText:
+          type: string
+          description: Titre du texte correspondant
+        jurisDate:
+          type: string
+          description: Date d'état juridique
+        jurisState:
+          type: string
+          description: Etat juridique du texte
+        liens:
+          type: array
+          description: Liens
+          items:
+            $ref: '#/components/schemas/TexteLien'
+        modifDate:
+          type: string
+          description: Date de modification
+        motsCles:
+          type: array
+          description: Mots-clés
+          items:
+            type: string
+        nature:
+          type: string
+          description: Nature
+        nor:
+          type: string
+          description: Numéro NOR
+          example: NCCX8900064L
+        nota:
+          type: string
+          description: Nota
+        notice:
+          type: string
+          description: Notice
+        numParution:
+          type: string
+          description: Numéro de parution
+        observations:
+          type: string
+          description: Observations
+        prepWork:
+          type: string
+          description: Travaux préparatoires
+        rectificatif:
+          type: string
+          description: Rectificatif
+        resume:
+          type: string
+          description: Résumé
+        sections:
+          type: array
+          description: Liste des sections de premier niveau du texte. La liste est
+            ordonnée
+          items:
+            $ref: '#/components/schemas/ConsultSection'
+        signers:
+          type: string
+          description: Signataires
+        textAbroge:
+          type: boolean
+          description: Indique si le texte est abrogé
+        textNumber:
+          type: string
+          description: Numéro de texte
+        title:
+          type: string
+          description: Titre du texte
+          example: Loi contenant organisation du notariat (loi 25 ventôse an XI)
+        visa:
+          type: string
+          description: Visas
+      description: Réponse à une requête de consultation d'un texte JORF
+    JuriConsultRequest:
+      title: JuriConsultRequest
+      required:
+      - textId
+      type: object
+      properties:
+        textId:
+          type: string
+          description: Identifiant du texte
+          example: JURITEXT000037999394
+      description: requête de consultation d'un texte de Jurisprudence judiciaire
+    LODAListResult:
+      title: LODAListResult
+      type: object
+      properties:
+        cid:
+          type: string
+          description: Chronical ID
+          example: JORFTEXT000033279563
+        dateDebut:
+          type: string
+          description: Date de début
+          format: date-time
+        dateFin:
+          type: string
+          description: Date de fin
+          format: date-time
+        dossiersLegislatifs:
+          type: array
+          description: Liste des dossiers législatifs
+          items:
+            $ref: '#/components/schemas/DossierLegislatif'
+        etat:
+          type: string
+          description: Etat juridique
+          example: VIGUEUR
+        id:
+          type: string
+          description: Identifiant unique
+          example: LEGITEXT000033280430
+        lastUpdate:
+          type: string
+          description: Date de dernière mise à jour
+          format: date-time
+        titre:
+          type: string
+          description: Titre
+          example: Ordonnance n° 2016-1406 du 20 octobre 2016 portant adaptation et
+            simplification de la législation relative à l'Etablissement français du
+            sang et aux activités liées à la transfusion sanguine
+      description: Objet représentant un résultat LODA
+    SignataireKali:
+      title: SignataireKali
+      type: object
+      properties:
+        adhesion:
+          type: string
+          description: Adhésion
+        denonciation:
+          type: string
+          description: Dénonciation
+        execution:
+          type: string
+          description: Exécution
+        faitA:
+          type: string
+          description: Fait A
+        patron:
+          type: string
+          description: Patronat
+        signExt:
+          type: string
+          description: Signataire extérieur
+        syndic:
+          type: string
+          description: Syndicat
+      description: Objet représentant un signataire KALI
+    ConventionsListRequest:
+      title: ConventionsListRequest
+      required:
+      - pageNumber
+      - pageSize
+      type: object
+      properties:
+        keyWords:
+          type: array
+          description: Liste des mots clés à filtrer
+          example:
+          - ABATTOIRS
+          - CHAUX HYDRAULIQUES
+          items:
+            type: string
+        legalStatus:
+          type: array
+          description: Liste des états juridique à filtrer
+          example:
+          - VIGUEUR
+          - ABROGE
+          - VIGUEUR_DIFF
+          items:
+            type: string
+            enum:
+            - VIGUEUR
+            - ABROGE_DIFF
+            - VIGUEUR_DIFF
+            - VIGUEUR_ETEN
+            - ABROGE
+            - PERIME
+            - ANNULE
+            - MODIFIE
+            - DISJOINT
+            - SUBSTITUE
+            - TRANSFERE
+            - INITIALE
+            - MODIFIE_MORT_NE
+            - SANS_ETAT
+            - DENONCE
+            - REMPLACE
+            - VIGUEUR_NON_ETEN
+        pageNumber:
+          type: integer
+          description: Numéro de la page à consulter
+          format: int32
+          example: 1
+        pageSize:
+          type: integer
+          description: Nombre de résultats par page (max 100)
+          format: int32
+          example: 10
+        searchValue:
+          type: string
+          description: Texte à rechercher dans les titres ou IDCC permettant de filtrer
+            le résultat
+          example: Industrie
+        sort:
+          type: string
+          description: Ordre de tri
+          example: DATE_PUBLI_ASC
+          enum:
+          - DATE_UPDATE
+          - DATE_PUBLI_ASC
+          - DATE_PUBLI_DESC
+      description: Requête paginée pour lister les conventions collectives
+    FullConteneur:
+      title: FullConteneur
+      type: object
+      properties:
+        ancienId:
+          type: string
+          description: Ancien Identifiant
+        datePubli:
+          type: string
+          description: Date de publication
+          format: date-time
+        etat:
+          type: string
+          description: Etat juridique du conteneur
+        id:
+          type: string
+          description: Identifiant du conteneur
+          example: JORFCONT000038052140
+        idEli:
+          type: string
+          description: Identifiant ELI
+          example: /eli/jo/2019/1/25/0021
+        idTechInjection:
+          type: string
+          description: Identifiant technique de l'élément injecté
+        nature:
+          type: string
+          description: Nature du conteneur
+          example: JO
+        num:
+          type: string
+          description: Numéro de JO
+          example: "0021"
+        numero:
+          type: string
+        origine:
+          type: string
+          description: Origine
+          example: JORF
+        refInjection:
+          type: string
+          description: Référence technique permettant d'identifier la date d'injection
+        relevantDate:
+          type: string
+          format: date-time
+        structure:
+          $ref: '#/components/schemas/StructureTxt'
+        titre:
+          type: string
+          description: Titre
+          example: JORF n°0021 du 25 janvier 2019
+        url:
+          type: string
+          description: chemin vers le conteneur
+          example: conteneur/JORF/CONT/00/00/38/05/21/JORFCONT000038052140.xml
+      description: Objet représentant un conteneur
+    SuggestSupplyRequest:
+      title: SuggestSupplyRequest
+      type: object
+      properties:
+        searchText:
+          type: string
+          description: Texte à rechercher
+          example: mariage
+        supplies:
+          type: array
+          description: Liste des fonds dans lesquels exécuter la recherche pour la
+            suggestion
+          example:
+          - JORF
+          - JURI
+          items:
+            type: string
+            enum:
+            - ALL
+            - ALL_SUGGEST
+            - LODA_LIST
+            - CODE_LIST
+            - CODE_RELEASE_DATE
+            - CODE_RELEASE_DATE_SUGGEST
+            - CODE_LEGAL_STATUS
+            - LODA_RELEASE_DATE
+            - LODA_RELEASE_DATE_SUGGEST
+            - LODA_LEGAL_STATUS
+            - KALI
+            - KALI_TEXT
+            - CONSTIT
+            - CETAT
+            - JURI
+            - JORF
+            - JORF_SUGGEST
+            - CNIL
+            - ARTICLE
+            - CIRC
+            - ACCO
+      description: Requête de suggestion d'une recherche textuelle dans un ou plusieurs
+        fonds
+    SearchNearestVersionRequest:
+      title: SearchNearestVersionRequest
+      required:
+      - cidText
+      - date
+      type: object
+      properties:
+        cidSection:
+          type: string
+          description: Chronical ID de la section
+          example: LEGISCTA000006117894
+        cidText:
+          type: string
+          description: Chronical ID du texte
+          example: LEGITEXT000006070721
+        date:
+          type: string
+          description: Date de référence pour la recherche
+          format: date-time
+      description: Requête de récupération de la version d'un texte (et d'une section)
+        la plus proche d'une date demandée
+    Circulaire:
+      title: Circulaire
+      type: object
+      properties:
+        annexes:
+          type: string
+          description: Annexes
+          example: "4"
+        attachment:
+          $ref: '#/components/schemas/Attachment'
+        attachmentName:
+          type: string
+          description: Nom du fichier PDF lié
+          example: cir_44128.pdf
+        attachmentUrl:
+          type: string
+          description: Chemin vers le fichier PDF
+        auteur:
+          type: string
+          description: Auteur
+          example: Le ministre de l'éducation nationale et de la jeunesse
+        categories:
+          type: array
+          description: Liste des catégories
+          items:
+            type: string
+        data:
+          type: string
+          description: Contenu du fichier en base64
+        dateDepot:
+          type: string
+          description: Date de dépôt
+          format: date-time
+        dateExport:
+          type: string
+          description: Date d'export
+          format: date-time
+        dateMiseApplication:
+          type: string
+          description: Date de mise en application
+          format: date-time
+        dateOpposabilite:
+          type: string
+          description: Date de déclaration d'opposabilité
+          format: date-time
+        dateSignature:
+          type: string
+          description: Date de signature
+          format: date-time
+        destinataire:
+          type: string
+          description: Destinataire
+        domaines:
+          type: array
+          description: Liste des domaines
+          example:
+          - Jeunesse, sports, vie associative
+          items:
+            type: string
+        emailDeposant:
+          type: string
+          description: Email déposant
+        etat:
+          type: string
+          description: Etat
+          example: V
+        id:
+          type: string
+          description: Identifiant
+          example: "44128"
+        idTechInjection:
+          type: string
+          description: Identifiant technique de l'élément injecté
+        ministeresDeposants:
+          type: array
+          description: Liste des ministères déposants
+          items:
+            type: string
+        motsCles:
+          type: array
+          description: Liste des mots clés
+          example:
+          - Enseignement, Education  et Sciences et techniques
+          items:
+            type: string
+        motsClesLibres:
+          type: string
+          description: Liste des mots clés libres
+          example: périscolaire ; accueils collectifs de mineurs ; Plan mercredi
+        nor:
+          type: string
+          description: Numéro NOR
+          example: MENV1829930J
+        numeroCerfa:
+          type: string
+          description: Numéro CERFA
+        numeroInterne:
+          type: string
+          description: Numéro interne
+          example: 2018-139
+        opposable:
+          type: string
+          description: Indique si la circulaire est opposable
+          example: O
+        origine:
+          type: string
+          description: Origine
+          example: CIRC
+        refInjection:
+          type: string
+          description: Référence technique permettant d'identifier la date d'injection
+        referencePublicationJoBo:
+          type: string
+          description: Référence de publication
+          example: "7293"
+        relevantDate:
+          type: string
+          format: date-time
+        remplace:
+          type: string
+          example: 'À compter du 15 décembre 2017 : Instruction n° 225/DEF/TM/T du
+            29 mars 1995 (BOC, p. 1661 ; BOEM 404.3.3).'
+        resume:
+          type: string
+          description: Résumé
+        signataire:
+          type: string
+          description: Signataire
+          example: A LAURENT, SG-MCAS, JP VINQUANT, DGCS et A BURSTIN, Directrice
+            de la CNSA
+        sizeToDisplay:
+          type: string
+          description: Taille du fichier PDF avec son unité
+          example: 629,7 Ko
+        tailleFichierPdf:
+          type: integer
+          description: Taille du fichier PDF en octets
+          format: int64
+          example: 644810
+        textesReferences:
+          type: array
+          description: Liste des textes de référence
+          items:
+            $ref: '#/components/schemas/TexteReference'
+        titre:
+          type: string
+          description: Titre de la circulaire
+          example: Instruction relative à la mise en oeuvre du Plan mercredi
+        typeGouv:
+          type: string
+          example: oui
+        typeService:
+          type: string
+          example: oui
+        utilisateurDeposantMinistere:
+          type: string
+          description: Nom du ministère déposant
+          example: MEN - Education nationale
+        utilisateurDeposantMinistereCode:
+          type: integer
+          description: Code du ministère déposant
+          format: int64
+          example: 7
+      description: Objet représentant une circulaire
+    ElasticData:
+      title: ElasticData
+      type: object
+      properties:
+        indexName:
+          type: string
+          description: Nom de l'index
+          example: data_next_juri
+        lastIndex:
+          type: string
+          description: Date du dernier document indexé
+          format: date-time
+        nbDoc:
+          type: integer
+          description: Nombre de documents
+          format: int64
+          example: 992978
+        usage:
+          type: string
+          description: Description de l'usage de l'index
+          example: Consultation et recherche des fonds JURI,CETA et CONSTIT
+      description: Objet représentant les informations d'un index
+    CodeConsultRequest:
+      title: CodeConsultRequest
+      required:
+      - date
+      - textId
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date de consultation
+          format: date-time
+        sctCid:
+          type: string
+          description: Chronical ID de la section a consulter (Non requis pour la
+            consultation de la table des matières sinon obligatoire)
+          example: LEGISCTA000006112861
+        textId:
+          type: string
+          description: Chronical ID du texte
+          example: JORFTEXT000000882738
+      description: requête de consultation d'un texte du fonds CODE.
+    SuggestValue:
+      title: SuggestValue
+      type: object
+      properties:
+        dateVersion:
+          type: string
+          description: Date de la version retournée par la suggestion
+          format: date-time
+        id:
+          type: string
+          description: Identifiant du texte/section/article
+          example: JORFTEXT000000320201
+        label:
+          type: string
+          description: Titre à afficher
+          example: 'Ordonnance du 18 juillet 1944 FORCES BRITANNIQUES : MARIAGE SUR
+            LE TERRITOIRE FRANCAIS'
+        nature:
+          type: string
+          description: Nature de l'élément lié
+          example: ordonnance
+        origin:
+          type: string
+          description: Origine
+          example: JORF
+      description: Objet représentant une suggestion
+    ArticleRequest:
+      title: ArticleRequest
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant de l'article
+          example: LEGIARTI000006307920
+      description: Requête pour récupérer un article par son identifiant
+    ChronoLegiTextRequest:
+      title: ChronoLegiTextRequest
+      required:
+      - dateConsult
+      - endYear
+      - startYear
+      - textCid
+      type: object
+      properties:
+        dateConsult:
+          type: string
+          description: Date de référence
+          format: date-time
+        endYear:
+          type: integer
+          description: Année de fin de chargement des détails
+          format: int32
+          example: 2018
+        startYear:
+          type: integer
+          description: Année de début de chargement des détails
+          format: int32
+          example: 2015
+        textCid:
+          type: string
+          description: Chronical ID du texte
+          example: LEGITEXT000006070721
+      description: requête de consultation d'un chronolegi. Le Chronolegi complet
+        du texte est retourné cependant, seulement la période startYear<=>endYear
+        aura le détail des versions chargé.
+    ConventionsListResponse:
+      title: ConventionsListResponse
+      type: object
+      properties:
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        legalStatus:
+          $ref: '#/components/schemas/Facet'
+        moteCles:
+          $ref: '#/components/schemas/Facet'
+        results:
+          type: array
+          description: Liste des résultats de la page
+          items:
+            $ref: '#/components/schemas/ConventionsListResult'
+        totalResultNumber:
+          type: integer
+          description: Nombre de résultats
+          format: int64
+          example: 12
+      description: Résultat d'une requête paginée pour lister les textes des conventions
+        collectives
+    Article:
+      title: Article
+      type: object
+      properties:
+        activitePro:
+          type: array
+          description: Liste des activités
+          items:
+            type: string
+        articleVersions:
+          type: array
+          description: Liste des versions de l'article
+          items:
+            $ref: '#/components/schemas/ArticleVersion'
+        calipsos:
+          type: array
+          description: Liste des calipsos
+          items:
+            type: string
+        cid:
+          type: string
+          description: Chronical ID
+          example: LEGIARTI000006307893
+        cidTexte:
+          type: string
+          description: Chronical ID du texte
+        computedNums:
+          type: array
+          description: Liste des numéros de l'article
+          items:
+            type: string
+        conditionDiffere:
+          type: string
+          description: Condition différée => Spécifique conventions collectives
+        conteneurs:
+          type: array
+          description: Liste d'id de conteneurs
+          items:
+            $ref: '#/components/schemas/Conteneur'
+        context:
+          $ref: '#/components/schemas/Context'
+        dateDebut:
+          type: string
+          description: Date de début
+          format: date-time
+        dateDebutExtension:
+          type: string
+          description: Date de début si extension
+          format: date-time
+        dateFin:
+          type: string
+          description: Date de fin
+          format: date-time
+        dateFinExtension:
+          type: string
+          description: Date de fin si extension
+          format: date-time
+        etat:
+          type: string
+          description: Etat juridique
+          example: MODIFIE_MORT_NE
+        fullSectionsTitre:
+          type: string
+          description: Concaténation de l'ensemble des titres de la chaine parente
+        historique:
+          type: string
+          description: Historique => Spécifique conventions collectives
+        id:
+          type: string
+          description: Identifiant de l'article
+          example: LEGIARTI000006307920
+        idEli:
+          type: string
+          description: Identifiant ELI
+        idEliAlias:
+          type: string
+          description: Alias ELI
+        idTechInjection:
+          type: string
+          description: Identifiant technique de l'élément injecté
+        idTexte:
+          type: string
+          description: Identifiant du texte
+        inap:
+          type: string
+          description: INAP
+        lienAutres:
+          type: array
+          description: Autres liens de l'article
+          items:
+            $ref: '#/components/schemas/Lien'
+        lienCitations:
+          type: array
+          description: Liste des liens de citation de l'article
+          items:
+            $ref: '#/components/schemas/LienCitation'
+        lienConcordes:
+          type: array
+          description: Liste des liens de concordance de l'article
+          items:
+            $ref: '#/components/schemas/LienConcorde'
+        lienModifications:
+          type: array
+          description: Liste des liens de modification de l'article
+          items:
+            $ref: '#/components/schemas/LienModification'
+        nature:
+          type: string
+          description: Nature
+          example: Article
+        nota:
+          type: string
+          description: Contenu nota
+        notaHtml:
+          type: string
+          description: Contenu nota au format HTML
+        num:
+          type: string
+          description: Numéro de l'article
+          example: "156"
+        numeroBo:
+          type: string
+          description: Numéro du bulletin officiel
+        numeroBrochure:
+          type: array
+          description: Liste des numéros de brochure
+          items:
+            type: string
+        ordre:
+          type: integer
+          description: Numéro d'ordre permettant le tri des articles dans leur élément
+            parent.
+          format: int64
+          example: 644235
+        origine:
+          type: string
+          description: Origine
+          example: LEGI
+        refInjection:
+          type: string
+          description: Référence technique permettant d'identifier la date d'injection
+        sectionParentCid:
+          type: string
+          description: Chronical ID de la section parente
+          example: LEGISCTA000006191588
+        sectionParentId:
+          type: string
+          description: Identifiant technique de la section parente
+          example: LEGISCTA000006191588
+        sectionParentTitre:
+          type: string
+          description: Titre de la section parente
+          example: 'I : Revenu imposable'
+        surtitre:
+          type: string
+          description: Surtitre => Spécifique conventions collectives
+        textTitles:
+          type: array
+          description: Liste des versions du texte contenant l'article
+          items:
+            $ref: '#/components/schemas/TextTitle'
+        texte:
+          type: string
+          description: Contenu textuel de l'article
+        texteHtml:
+          type: string
+          description: Contenu HTML de l'article
+        type:
+          type: string
+          description: Type
+          example: AUTONOME
+        versionArticle:
+          type: string
+          description: Version
+          example: "28"
+        versionPrecedente:
+          type: string
+          description: Version précédente
+      description: Objet représentant le détail d'un article
+    JorfConsultWithIdEliAliasRequest:
+      title: JorfConsultWithIdEliAliasRequest
+      required:
+      - idEliOrAlias
+      type: object
+      properties:
+        idEliOrAlias:
+          type: string
+          description: ID Eli ou Alias du JORF cible.
+          example: /eli/decret/2018/2/13/JUSC1732516D/jo/texte
+      description: Requête de consultation d'un JORF à partir de son URL de type ELI
+        ou Alias.
+    SuggestAccoResponse:
+      title: SuggestAccoResponse
+      type: object
+      properties:
+        executionTime:
+          type: integer
+          format: int64
+        results:
+          type: object
+          properties: {}
+          description: Liste des suggestions
+        totalResultNumber:
+          type: integer
+          format: int64
+      description: Réponse à une requête de suggestion pour les accords d'entreprises
+    Conteneur:
+      title: Conteneur
+      type: object
+      properties:
+        ancienId:
+          type: string
+          description: Ancien Identifiant
+        cid:
+          type: string
+          description: Chronical ID
+          example: KALICONT000005635384
+        datePubli:
+          type: string
+          description: Date de publication
+          format: date-time
+        etat:
+          type: string
+          description: Etat juridique
+          example: VIGUEUR_ETEN
+        id:
+          type: string
+          description: Identifiant du conteneur
+          example: JORFCONT000038052140
+        idEli:
+          type: string
+          description: Identifiant ELI
+          example: /eli/jo/2019/1/25/0021
+        idTechInjection:
+          type: string
+          description: Identifiant technique de l'élément injecté
+        nature:
+          type: string
+          description: Nature du conteneur
+          example: IDCC
+        num:
+          type: string
+          description: Numéro
+          example: "0000000000001261"
+        numero:
+          type: string
+          description: Numéro conteneur
+          example: "1261"
+        origine:
+          type: string
+          description: Origine
+          example: JORF
+        refInjection:
+          type: string
+          description: Référence technique permettant d'identifier la date d'injection
+        relevantDate:
+          type: string
+          format: date-time
+        titre:
+          type: string
+          description: Titre du conteneur
+        url:
+          type: string
+          description: chemin vers le conteneur
+          example: conteneur/JORF/CONT/00/00/38/05/21/JORFCONT000038052140.xml
+      description: Objet représentant un conteneur
+    DossiersLegislatifsRequest:
+      title: DossiersLegislatifsRequest
+      required:
+      - legislatureId
+      - type
+      type: object
+      properties:
+        legislatureId:
+          type: integer
+          description: Identifiant de la législature
+          format: int32
+          example: 15
+        type:
+          type: string
+          description: Type de dossier législatif
+          example: LOI_PUBLIEE
+          enum:
+          - LOI_PUBLIEE
+          - ORDONNANCE_PUBLIEE
+          - PROJET_LOI
+          - PROPOSITION_LOI
+      description: Requête pour lister les dossiers législatifs d'une législature
+    TableRequest:
+      title: TableRequest
+      required:
+      - endYear
+      type: object
+      properties:
+        endYear:
+          type: integer
+          description: Année de fin
+          format: int32
+          example: 2017
+        startYear:
+          type: integer
+          description: Année de début
+          format: int32
+          example: 2012
+      description: Requête de récupération des tables annuelles
+    YearsWithNoTableResponse:
+      title: YearsWithNoTableResponse
+      type: object
+      properties:
+        lstYearDisabled:
+          type: array
+          description: Liste des années
+          example:
+          - 2015
+          - 2016
+          items:
+            type: integer
+            format: int32
+      description: Résultat d'une requête pour lister les années sans table annuelle
+    DocumentAdministratif:
+      title: DocumentAdministratif
+      type: object
+      properties:
+        ancienId:
+          type: string
+          description: Ancien ID
+        attachmentName:
+          type: string
+          description: Nom du fichier
+          example: dae_20170630_0003_0001.pdf.sig
+        attachmentUrl:
+          type: string
+          description: Chemin vers le fichier attaché
+        dateDocument:
+          type: string
+          description: Date du document
+          format: date-time
+        dateJO:
+          type: string
+          description: Date du JO
+          format: date-time
+        displaySize:
+          type: string
+          description: Taille du fichier avec son unité
+          example: 918,4 Ko
+        id:
+          type: string
+          description: Identifiant unique
+          example: DOCATEXT000037511083
+        idTechInjection:
+          type: string
+          description: Identifiant technique de l'élément injecté
+        nature:
+          type: string
+          description: Nature
+        nor:
+          type: string
+          description: Numéro NOR
+          example: CCCJ1718194V
+        numero:
+          type: string
+          description: Numéro
+          example: "0003"
+        origine:
+          type: string
+          description: Origine
+          example: DOCA
+        refInjection:
+          type: string
+          description: Référence technique permettant d'identifier la date d'injection
+        sousTitre:
+          type: string
+          description: Sous-titre
+          example: Élections partielles de l’année 2016
+        titre:
+          type: string
+          description: Titre
+          example: Publication simplifiée des comptes de campagne
+        url:
+          type: string
+          description: Chemin vers le fichier xml
+      description: Objet représentant un document administratif
+    ConsultCirculaireResponse:
+      title: ConsultCirculaireResponse
+      type: object
+      properties:
+        circulaire:
+          $ref: '#/components/schemas/Circulaire'
+        dereferenced:
+          type: boolean
+          description: Identifie si le contenu est référençable par les robots d'indexation
+          example: true
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+      description: Réponse à une requête de consultation d'une circulaire
+    ConventionsListResult:
+      title: ConventionsListResult
+      type: object
+      properties:
+        cid:
+          type: string
+          description: Chronical ID
+          example: KALITEXT000005651341
+        cidConteneur:
+          type: string
+          description: Chronical ID du conteneur
+          example: KALICONT000005635668
+        etat:
+          type: string
+          description: Etat juridique du texte
+          example: ABROGE
+        id:
+          type: string
+          description: Identifiant unique
+          example: KALITEXT000005651341
+        idcc:
+          type: string
+          description: IDCC
+          example: "1119"
+        titre:
+          type: string
+          description: Titre
+          example: Convention collective nationale pour le personnel d'encadrement
+            de l'industrie de la fabrication de la chaux du 27 avril 1981, mise à
+            jour au 1er mars 1982.  Etendue par arrêté du 5 novembre 1982 JONC 21
+            décembre 1982.
+      description: Objet représentant un résultat de texte de convention collective
+    ConcordanceLinksRequest:
+      title: ConcordanceLinksRequest
+      required:
+      - articleId
+      type: object
+      properties:
+        articleId:
+          type: string
+          description: Identifiant de l'article
+          example: LEGIARTI000006419320
+      description: requête de récupération des liens de concordance d'un article
+    KaliTextConsultSectionRequest:
+      title: KaliTextConsultSectionRequest
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant du texte ou d'un de ses éléments enfants (section/article)
+          example: KALISCTA000005716465
+      description: Requête de consultation d'un texte d'une convention collective
+    SearchRequestDTO:
+      title: SearchRequestDTO
+      required:
+      - fond
+      - recherche
+      type: object
+      properties:
+        fond:
+          type: string
+          description: 'Fonds sur lequel appliquer la recherche. Pour rechercher dans
+            tous les fonds, il faut définir la valeur ALL. Pour les fonds LODA et
+            CODE il existe deux types de recherche : la recherche par date (_DATE)
+            de version ou la recherche par état juridique (_ETAT)'
+          example: LODA_DATE
+          enum:
+          - JORF
+          - CNIL
+          - CETAT
+          - JURI
+          - CONSTIT
+          - KALI
+          - CODE_DATE
+          - CODE_ETAT
+          - LODA_DATE
+          - LODA_ETAT
+          - ALL
+          - CIRC
+          - ACCO
+        recherche:
+          $ref: '#/components/schemas/RechercheSpecifiqueDTO'
+      description: Requête paginée de recherche
+    GetJorfContResponseItem:
+      title: GetJorfContResponseItem
+      type: object
+      properties:
+        joCont:
+          $ref: '#/components/schemas/FullConteneur'
+        joEA:
+          $ref: '#/components/schemas/FileMetadata'
+        joInap:
+          $ref: '#/components/schemas/FileMetadata'
+        josPat:
+          type: array
+          description: Liste des métadonnées des JO patrimoniaux
+          items:
+            $ref: '#/components/schemas/FileMetadata'
+      description: Élément de réponse à une recheche de JO
+    Context:
+      title: Context
+      type: object
+      properties:
+        longeurChemin:
+          type: integer
+          description: Longueur du chemin
+          format: int32
+          example: 53
+        nombreVersionParent:
+          type: integer
+          description: Nombre de versions existantes pour le parent
+          format: int32
+          example: 1
+        titreTxt:
+          type: array
+          description: Liste des versions de titres pour le texte parent
+          items:
+            $ref: '#/components/schemas/DetailContext'
+        titresTM:
+          type: array
+          description: Liste des sections parentes de l'élément
+          items:
+            $ref: '#/components/schemas/DetailContext'
+      description: Objet représentant le contexte d'un élément
+    LienConcorde:
+      title: LienConcorde
+      type: object
+      properties:
+        articleId:
+          type: string
+          description: Identifiant de l'article lié
+          example: LEGIARTI000032930490
+        articleNum:
+          type: string
+          description: Numéro de l'article lié
+          example: "53"
+        linkOrientation:
+          type: string
+          description: Sens de la modification
+          example: cible
+        linkType:
+          type: string
+          description: Type de lien
+          example: MODIFIE
+        natureText:
+          type: string
+          description: Nature du texte lié
+          example: LOI
+        textCid:
+          type: string
+          description: Chronical ID du texte lié
+          example: JORFTEXT000030978561
+        textTitle:
+          type: string
+          description: Titre du texte lié
+          example: LOI n°2015-990 du 6 août 2015 - art. 53 (V)
+    TexteLien:
+      title: TexteLien
+      type: object
+      properties:
+        cidTexte:
+          type: string
+          description: Chronical ID du texte
+        datePubliTexte:
+          type: string
+          description: Date de publication
+        dateSignaTexte:
+          type: string
+          description: Date de signature
+        id:
+          type: string
+          description: Identifiant
+        natureTexte:
+          type: string
+          description: Nature du texte
+        norTexte:
+          type: string
+          description: NOR
+        num:
+          type: string
+          description: Numéro
+        numTexte:
+          type: string
+          description: Numéro du texte
+        sens:
+          type: string
+          description: Sens du type de lien
+        title:
+          type: string
+          description: Titre
+        typeLien:
+          type: string
+          description: Type de lien
+      description: Objet représentant un lien vers un texte
+    ConsultJuriTextResponse:
+      title: ConsultJuriTextResponse
+      type: object
+      properties:
+        dereferenced:
+          type: boolean
+          description: Identifie si le contenu est référençable par les robots d'indexation
+          example: true
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        text:
+          $ref: '#/components/schemas/TexteSimple'
+      description: réponse de consultation d'un texte de Jurisprudence judiciaire
+    ConsultTextResponse:
+      title: ConsultTextResponse
+      type: object
+      properties:
+        alias:
+          type: string
+          description: Alias
+        articles:
+          type: array
+          description: Liste des articles racine du texte. La liste est ordonnée
+          items:
+            $ref: '#/components/schemas/ConsultArticle'
+        cid:
+          type: string
+          description: Chronical ID du texte
+          example: JORFTEXT000000882738
+        dateDebutVersion:
+          type: string
+          description: Date de début de la version
+        dateFinVersion:
+          type: string
+          description: Date de fin de la version
+        dateParution:
+          type: string
+          description: Date de parution
+          format: date-time
+        dereferenced:
+          type: boolean
+          description: Identifie si le contenu est référençable par les robots d'indexation
+          example: true
+        dossiersLegislatifs:
+          type: array
+          description: Liste des dossiers legislatifs
+          items:
+            $ref: '#/components/schemas/DossierLegislatif'
+        eli:
+          type: string
+          description: identifiant européen de la ‎législation ou European Legislation
+            Identifier
+          example: /eli/arrete/2019/1/18/TREK1901124A/jo/texte
+        etat:
+          type: string
+          description: Etat du texte
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        id:
+          type: string
+          description: Identifiant du texte
+          example: LEGITEXT000006070994_01-08-2016
+        idConteneur:
+          type: string
+          description: Identifiant du conteneur du texte lorsqu'il en existe un.
+        inap:
+          type: boolean
+          description: INAP
+        jorfText:
+          type: string
+          description: Titre du texte correspondant
+        jurisDate:
+          type: string
+          description: Date d'état juridique
+        jurisState:
+          type: string
+          description: Etat juridique du texte
+        liens:
+          type: array
+          description: Liens
+          items:
+            $ref: '#/components/schemas/TexteLien'
+        modifDate:
+          type: string
+          description: Date de modification
+        motsCles:
+          type: array
+          description: Mots-clés
+          items:
+            type: string
+        nature:
+          type: string
+          description: Nature
+        nor:
+          type: string
+          description: Numéro NOR
+          example: NCCX8900064L
+        nota:
+          type: string
+          description: Nota
+        notice:
+          type: string
+          description: Notice
+        numParution:
+          type: string
+          description: Numéro de parution
+        observations:
+          type: string
+          description: Observations
+        prepWork:
+          type: string
+          description: Travaux préparatoires
+        rectificatif:
+          type: string
+          description: Rectificatif
+        resume:
+          type: string
+          description: Résumé
+        sections:
+          type: array
+          description: Liste des sections de premier niveau du texte. La liste est
+            ordonnée
+          items:
+            $ref: '#/components/schemas/ConsultSection'
+        signers:
+          type: string
+          description: Signataires
+        textAbroge:
+          type: boolean
+          description: Indique si le texte est abrogé
+        textNumber:
+          type: string
+          description: Numéro de texte
+        title:
+          type: string
+          description: Titre du texte
+          example: Loi contenant organisation du notariat (loi 25 ventôse an XI)
+        visa:
+          type: string
+          description: Visas
+      description: Réponse à une requête de consultation d'un texte
+    DocsAdminsListResponse:
+      title: DocsAdminsListResponse
+      type: object
+      properties:
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        results:
+          type: array
+          description: Liste des résultats de la page
+          items:
+            $ref: '#/components/schemas/DocumentAdministratif'
+        totalResultNumber:
+          type: integer
+          description: Nombre de résultats
+          format: int64
+          example: 12
+        years:
+          $ref: '#/components/schemas/Facet'
+      description: Résultat d'une requête pour lister les documents administratifs
+    Niveau:
+      title: Niveau
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant du niveau
+          example: "1415810580974"
+        libelle:
+          type: string
+          description: Libellé
+          example: Sénat
+        liens:
+          type: array
+          description: Liste des liens du niveau
+          items:
+            $ref: '#/components/schemas/Lien'
+        niveaux:
+          type: array
+          description: liste des niveaux enfants
+          items:
+            $ref: '#/components/schemas/Niveau'
+      description: Objet représentant un niveau dans l'arborescence d'un dossier législatif
+    ElasticDataResponse:
+      title: ElasticDataResponse
+      type: object
+      properties:
+        lstData:
+          type: array
+          description: Liste des informations par index
+          items:
+            $ref: '#/components/schemas/ElasticData'
+      description: Résultat d'une requête pour récupérer les informations sur les
+        index ElasticSearch
+    RegroupementDTO:
+      title: RegroupementDTO
+      type: object
+      properties:
+        detailLoaded:
+          type: boolean
+        title:
+          type: string
+          description: Titre du regroupement
+          example: "2015"
+        versions:
+          type: object
+          properties: {}
+          description: Map listant les versions dans l'ordre antéchronologique.  La
+            clé correspond à la date de la version
+      description: Objet définissant le regroupement de plusieurs versions
+    DecisionAttaquee:
+      title: DecisionAttaquee
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date de la décision
+          format: date-time
+        formation:
+          type: string
+          description: formation
+      description: Objet représentant une décision attaquée
+    SearchResult:
+      title: SearchResult
+      type: object
+      properties:
+        conforme:
+          type: boolean
+        date:
+          type: string
+          format: date-time
+        dateDiffusion:
+          type: string
+          format: date-time
+        datePublication:
+          type: string
+          format: date-time
+        dateSignature:
+          type: string
+          format: date-time
+        dossiersLegislatifs:
+          type: array
+          items:
+            $ref: '#/components/schemas/DossierLegislatif'
+        etat:
+          type: string
+        idAttachment:
+          type: string
+        jorfText:
+          type: string
+        moreArticle:
+          type: boolean
+        motsCles:
+          type: array
+          items:
+            type: string
+        nature:
+          type: string
+        nor:
+          type: string
+        num:
+          type: string
+        numParution:
+          type: string
+        origin:
+          type: string
+        raisonSociale:
+          type: string
+        reference:
+          type: string
+        sections:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchSection'
+        sizeAttachment:
+          type: string
+        text:
+          type: string
+        themes:
+          type: array
+          items:
+            type: string
+        titles:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchTitle'
+        type:
+          type: string
+      description: Objet représentant un résultat de recherche
+    Accord:
+      title: Accord
+      type: object
+      properties:
+        adressesPostales:
+          type: array
+          description: Liste des addresses postales
+          items:
+            $ref: '#/components/schemas/AdressePostale'
+        attachementUrl:
+          type: string
+          description: Chemin vers le fichier attaché
+        attachment:
+          $ref: '#/components/schemas/Attachment'
+        codeApe:
+          type: string
+          description: Code APE
+          example: 2910Z
+        codeIdcc:
+          type: string
+          description: IDCC
+        codeUniteSignataire:
+          type: string
+          description: Code du signataire
+          example: "05"
+        conformeVersionIntegrale:
+          type: boolean
+          description: Indique si l'accord consulté est conforme à la version intégrale
+          example: true
+        data:
+          type: string
+          description: Contenu du fichier attaché en base64
+        dateDepot:
+          type: string
+          description: Date de dépôt
+          format: date-time
+        dateDiffusion:
+          type: string
+          description: Date de diffusion
+          format: date-time
+        dateEffet:
+          type: string
+          description: Date d'effet de l'accord
+          format: date-time
+        dateFin:
+          type: string
+          description: Date de fin
+          format: date-time
+        dateMaj:
+          type: string
+          description: Date de mise à jour
+          format: date-time
+        dateTexte:
+          type: string
+          description: Date du texte
+          format: date-time
+        fileSize:
+          type: string
+          description: Taille du fichier attaché avec son unité
+          example: 17,5 Ko
+        id:
+          type: string
+          description: Identifiant
+          example: ACCOTEXT000037731479
+        idTechInjection:
+          type: string
+          description: Identifiant technique de l'élément injecté
+        nature:
+          type: string
+          description: Nature
+          example: ACCORD
+        numero:
+          type: string
+          description: Numéro de l'accord
+          example: T04418002188
+        origine:
+          type: string
+          description: Origine
+          example: ACCO
+        raisonSociale:
+          type: string
+          description: Raison sociale
+          example: SAS G.P - GROUPE PILOTE
+        refInjection:
+          type: string
+          description: Référence technique permettant d'identifier la date d'injection
+        relevantDate:
+          type: string
+          format: date-time
+        secteur:
+          type: string
+          description: Secteur d'activité
+          example: Construction de véhicules automobiles
+        signataires:
+          type: array
+          description: Liste des signataires
+          example:
+          - "01"
+          items:
+            type: string
+        siret:
+          type: string
+          description: SIRET
+          example: "87280278000025"
+        syndicats:
+          type: array
+          description: Liste des syndicats
+          items:
+            $ref: '#/components/schemas/Syndicat'
+        themes:
+          type: array
+          description: Liste des thèmes
+          items:
+            $ref: '#/components/schemas/Theme'
+        titreTexte:
+          type: string
+          description: Titre du texte
+          example: Un Protocole d'Accord relatif à l'Organisation de la Négociation
+            Annuelle Obligatoire
+        url:
+          type: string
+          description: Chemin vers le fichier xml
+      description: Objet représentant un accord d'entreprise
+    CodeListResponse:
+      title: CodeListResponse
+      type: object
+      properties:
+        codeNames:
+          $ref: '#/components/schemas/Facet'
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        results:
+          type: array
+          description: Liste des résultats de la page
+          items:
+            $ref: '#/components/schemas/CodeListResult'
+        states:
+          $ref: '#/components/schemas/Facet'
+        totalResultNumber:
+          type: integer
+          description: Nombre de résultats
+          format: int64
+          example: 12
+      description: Résultat d'une requête paginée pour lister les codes
+    RechercheSpecifiqueDTO:
+      title: RechercheSpecifiqueDTO
+      required:
+      - champs
+      - operateur
+      - pageNumber
+      - pageSize
+      - sort
+      - typePagination
+      type: object
+      properties:
+        champs:
+          type: array
+          description: Liste des champs dans lesquels appliquer la recherche
+          example:
+          - criteres:
+            - criteres:
+              - typeRecherche: UN_DES_MOTS
+                valeur: soins
+                operateur: ET
+              - typeRecherche: TOUS_LES_MOTS_DANS_UN_CHAMP
+                valeur: fonction publique
+                proximite: "3"
+                operateur: ET
+              operateur: ET
+              proximite: 2
+              typeRecherche: UN_DES_MOTS
+              valeur: dispositions
+            operateur: ET
+            typeChamp: TITLE
+          items:
+            $ref: '#/components/schemas/ChampDTO'
+        filtres:
+          type: array
+          description: Liste des filtres à appliquer. La requête est effectuée automatiquement
+            avec un opérateur ET entre les filtres listés.
+          example:
+          - facette: NATURE
+            valeurs:
+            - LOI
+            - ORDONNANCE
+            - ARRETE
+          - facette: DATE_SIGNATURE
+            dates:
+              start: 2015-01-01
+              end: 2018-31-01
+          items:
+            $ref: '#/components/schemas/FiltreDTO'
+        operateur:
+          type: string
+          description: Opérateur entre les champs de recherche
+          example: ET
+          enum:
+          - ET
+          - OU
+        pageNumber:
+          type: integer
+          description: Numéro de la page à consulter
+          format: int32
+          example: 1
+        pageSize:
+          type: integer
+          description: Nombre d'éléments par page (max=100)
+          format: int32
+          example: 10
+        sort:
+          type: string
+          description: Tri des éléments trouvés (Les tris possibles dépendent du fonds
+            recherché)
+          example: SIGNATURE_DATE_DESC
+        typePagination:
+          type: string
+          description: Type de pagination. Spécifique pour les recherches dans les
+            articles d'un texte, dans les autres cas la valeur sera toujours DEFAULT.
+            Lors de la navigation dans plusieurs pages, il est nécessaire de passer
+            la valeur reçue dans la réponse précédente.
+          example: DEFAUT
+          enum:
+          - DEFAUT
+          - ARTICLE
+      description: Objet permettant de créer une recherche
+    ChampDTO:
+      title: ChampDTO
+      type: object
+      properties:
+        criteres:
+          type: array
+          description: Liste des critères/groupes de critères de recherche pour ce
+            champ
+          example:
+          - - criteres:
+              - typeRecherche: UN_DES_MOTS
+                valeur: soins
+                operateur: ET
+              - typeRecherche: TOUS_LES_MOTS_DANS_UN_CHAMP
+                valeur: fonction publique
+                proximite: "3"
+                operateur: ET
+              operateur: ET
+              proximite: 2
+              typeRecherche: UN_DES_MOTS
+              valeur: dispositions
+          items:
+            $ref: '#/components/schemas/CritereDTO'
+        operateur:
+          type: string
+          description: Opérateur entre les critères de recherche
+          example: ET
+          enum:
+          - ET
+          - OU
+        typeChamp:
+          type: string
+          description: Type de champ. Il est possible d'utiliser la valeur ALL pour
+            rechercher dans tous les champs.
+          example: TITLE
+          enum:
+          - ALL
+          - TITLE
+          - TABLE
+          - NOR
+          - NUM
+          - NUM_DEC
+          - NUM_ARTICLE
+          - ARTICLE
+          - MINISTERE
+          - VISA
+          - NOTICE
+          - VISA_NOTICE
+          - TRAVAUX_PREP
+          - SIGNATURE
+          - NOTA
+          - NUM_AFFAIRE
+          - ABSTRATS
+          - RESUMES
+          - TEXTE
+          - ECLI
+          - NUM_LOI_DEF
+          - TYPE_DECISION
+          - NUMERO_INTERNE
+          - REF_PUBLI
+          - RESUME_CIRC
+          - TEXTE_REF
+          - TITRE_LOI_DEF
+          - RAISON_SOCIALE
+          - MOTS_CLES
+          - IDCC
+      description: Objet décrivant une recherche dans un champ spécifique
+    CibleChronoDTO:
+      title: CibleChronoDTO
+      type: object
+      properties:
+        cid:
+          type: string
+          description: Chronical ID de l'élément
+          example: LEGIARTI000036829833
+        cidParent:
+          type: string
+          description: Chronical ID du parent de l'élément
+          example: LEGISCTA000032008380
+        cidText:
+          type: string
+          description: Chronical ID du texte
+          example: LEGITEXT000006070721
+        dateDebut:
+          type: string
+          description: Date de début de l'élément
+          format: date-time
+        dateFin:
+          type: string
+          description: Date de fin de l'élément
+          format: date-time
+        id:
+          type: string
+          description: Identifiant unique de l'élément
+          example: LEGIARTI000036829833
+        idParent:
+          type: string
+          description: Identifiant unique du parent de l'élément
+          example: LEGISCTA000032008380
+        name:
+          type: string
+          description: Nom/titre/numéro de l'élément
+          example: "1145"
+        nature:
+          type: string
+          description: Nature/type du texte
+          example: CODE
+          enum:
+          - LODA
+          - JORF
+          - CODE
+          - KALI
+          - JORFCONT
+        path:
+          type: string
+          description: Chemin représentant l'arborescence de l'élément dans le texte
+          example: LEGITEXT000006070721/LEGISCTA000006090271/LEGISCTA000006118032/LEGISCTA000032006712/LEGISCTA000006136341/LEGISCTA000006150237/LEGISCTA000032008378/LEGISCTA000032008380/LEGIARTI000006436355
+      description: Objet définissant la cible d'une modification
+    ConsultSection:
+      title: ConsultSection
+      type: object
+      properties:
+        articles:
+          type: array
+          description: Liste des articles enfants de la section. La liste est ordonnée
+          items:
+            $ref: '#/components/schemas/ConsultArticle'
+        cid:
+          type: string
+          description: Chronical ID
+          example: LEGISCTA000006092887
+        dateDebut:
+          type: string
+          description: Date de début de la version de la section
+        dateFin:
+          type: string
+          description: Date de fin de la version de la section
+        dateModif:
+          type: string
+          description: Date de dernière modification
+        dereferenced:
+          type: boolean
+          description: Identifie si le contenu est référençable par les robots d'indexation
+          example: true
+        etat:
+          type: string
+          description: Etat juridique
+          example: VIGUEUR
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        id:
+          type: string
+          description: Identifiant
+          example: LEGISCTA000006092887
+        intOrdre:
+          type: integer
+          description: Numéro indiquant l'ordre d'affichage
+          format: int64
+          example: 3
+        sectionConsultee:
+          type: boolean
+          description: Indique si la section est celle demandée en consultation
+          example: true
+        sections:
+          type: array
+          description: Liste des sections enfants de la section (peut être un texte
+            dans le cas des conventions collectives). La liste est ordonnée
+          items:
+            $ref: '#/components/schemas/ConsultSection'
+        title:
+          type: string
+          description: Titre de la section
+          example: 'Titre II : Régime du notariat'
+      description: Objet représentant une section lors d'une consultation
+    GetTableResponse:
+      title: GetTableResponse
+      type: object
+      properties:
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        tables:
+          type: array
+          description: Liste des tables trouvées
+          items:
+            $ref: '#/components/schemas/FileMetadata'
+        totalNbResult:
+          type: integer
+          format: int64
+      description: réponse de récupération des tables annuelles
+    SearchNearestVersionResponse:
+      title: SearchNearestVersionResponse
+      type: object
+      properties:
+        sectionTitle:
+          type: string
+          description: Titre de la version de la section trouvée si une section est
+            recherchée
+          example: 'Titre Ier : De la distinction des biens'
+        title:
+          $ref: '#/components/schemas/SearchTitle'
+      description: Résultat d'une requête de récupération de la version la plus proche
+        d'un texte en fonction d'une date
+    RelatedLinksArticleResponse:
+      title: RelatedLinksArticleResponse
+      type: object
+      properties:
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        liensCite:
+          type: array
+          description: Liste des liens vers les éléments que notre article cite
+          items:
+            $ref: '#/components/schemas/LiensRelatifsDTO'
+        liensCitePar:
+          type: array
+          description: Liste des liens vers les éléments qui citent notre article
+          items:
+            $ref: '#/components/schemas/LiensRelatifsDTO'
+      description: Réponse d'une requête de récupération des liens de citation d'un
+        article
+    DocsAdminsListRequest:
+      title: DocsAdminsListRequest
+      type: object
+      properties:
+        years:
+          type: array
+          description: Liste des années à filtrer
+          example:
+          - 2016
+          - 2017
+          items:
+            type: string
+      description: Requête pour lister les documents administratifs
+    Theme:
+      title: Theme
+      type: object
+      properties:
+        code:
+          type: string
+          description: Code
+          example: "123"
+        groupe:
+          type: string
+          description: Groupe
+          example: "10"
+        libelle:
+          type: string
+          description: Libellé
+          example: Calendrier des négociations
+      description: Objet représentant un thème
+    FiltreDTO:
+      title: FiltreDTO
+      type: object
+      properties:
+        dates:
+          $ref: '#/components/schemas/DatePeriod'
+        facette:
+          type: string
+          description: Nom de la facette => nom du filtre
+          example: JURIDICTION_NATURE
+        multiValeurs:
+          type: object
+          properties: {}
+          description: Map des sous-valeur d'une valeur de filtre dans le cas d'un
+            filtre par option texte. La clé doit être la valeur correspondante au
+            parent dans la liste 'valeurs'
+          example:
+            TRIBUNAL_ADMINISTATIF:
+            - Bordeaux
+            - Lille
+        singleDate:
+          type: string
+          description: Date unique dans le cas d'un filtre par date
+          format: date-time
+        valeurs:
+          type: array
+          description: Liste des valeurs du filtre dans le cas d'un filtre textuel
+            ou d'un filtre via option textuelle
+          example:
+          - TRIBUNAL_ADMINISTATIF
+          - COURS_APPEL
+          items:
+            type: string
+      description: Objet décrivant un filtre de recherche
+    SearchSection:
+      title: SearchSection
+      type: object
+      properties:
+        dateVersion:
+          type: string
+          format: date-time
+        extracts:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchExtract'
+        id:
+          type: string
+        title:
+          type: string
+    ConsultArticle:
+      title: ConsultArticle
+      type: object
+      properties:
+        articleVersion:
+          type: string
+          description: Version de l'article
+          example: "2"
+        cid:
+          type: string
+          description: Chronical ID
+          example: LEGISCTA000006092887
+        comporteLiens:
+          type: boolean
+          description: Indique si l'article contient des liens de citation. Utiliser
+            l'API relatedLinksArticle pour récupérer la liste des liens.
+          example: true
+        conditionDiffere:
+          type: string
+          description: Condition differée
+        content:
+          type: string
+          description: Contenu HTML de l'article
+        dereferenced:
+          type: boolean
+          description: Identifie si le contenu est référençable par les robots d'indexation
+          example: true
+        etat:
+          type: string
+          description: Etat juridique
+          example: VIGUEUR
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        historique:
+          type: string
+          description: Historique
+        id:
+          type: string
+          description: Identifiant
+          example: LEGISCTA000006092887
+        intOrdre:
+          type: integer
+          description: Numéro indiquant l'ordre d'affichage
+          format: int64
+          example: 3
+        lstLienCitation:
+          type: array
+          description: Liste des liens de citation. Toujours vide (voir propriété
+            comporteLiens)
+          items:
+            $ref: '#/components/schemas/LienCitation'
+        lstLienModification:
+          type: array
+          description: Liste des liens de modification
+          items:
+            $ref: '#/components/schemas/LienModification'
+        modificatorCid:
+          type: string
+          description: Chronical ID de l'élément modificateur de l'article
+          example: JORFTEXT000030978561
+        modificatorDate:
+          type: string
+          description: Date de modification par l'élément modificateur
+          example: 2016-07-25
+        modificatorTitle:
+          type: string
+          description: Titre de l'élément modificateur de l'article
+          example: LOI n°2015-990 du 6 août 2015 - art. 53 (V)
+        nota:
+          type: string
+          description: Nota
+        num:
+          type: string
+          description: Numéro de l'article
+          example: "52"
+        surtitre:
+          type: string
+          description: Surtitre
+        type:
+          type: string
+          description: Type
+          example: AUTONOME
+      description: Objet représentant un article lors d'une consultation
+    CirculaireConsultRequest:
+      title: CirculaireConsultRequest
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant de la circulaire
+          example: "44128"
+      description: Requête de consultation d'une circulaire
+    ArticleCidRequest:
+      title: ArticleCidRequest
+      required:
+      - cid
+      type: object
+      properties:
+        cid:
+          type: string
+          description: Chronical ID de l'article
+          example: LEGIARTI000006307920
+      description: Requête pour récupérer un article par son Chronical ID
+    LODAListRequest:
+      title: LODAListRequest
+      required:
+      - pageNumber
+      - pageSize
+      type: object
+      properties:
+        legalStatus:
+          type: array
+          description: Liste des états juridiques à filtrer
+          example:
+          - VIGUEUR
+          - ABROGE
+          - VIGUEUR_DIFF
+          items:
+            type: string
+            enum:
+            - VIGUEUR
+            - ABROGE_DIFF
+            - VIGUEUR_DIFF
+            - VIGUEUR_ETEN
+            - ABROGE
+            - PERIME
+            - ANNULE
+            - MODIFIE
+            - DISJOINT
+            - SUBSTITUE
+            - TRANSFERE
+            - INITIALE
+            - MODIFIE_MORT_NE
+            - SANS_ETAT
+            - DENONCE
+            - REMPLACE
+            - VIGUEUR_NON_ETEN
+        natures:
+          type: array
+          description: Liste des natures à filtrer
+          example:
+          - LOI
+          - ORDONNANCE
+          - DECRET
+          items:
+            type: string
+            enum:
+            - LOI
+            - ORDONNANCE
+            - DECRET
+            - DECRET_LOI
+            - ARRETE
+            - CONSTITUTION
+            - DECISION
+            - CONVENTION
+            - DECLARATION
+        pageNumber:
+          type: integer
+          description: Numéro de la page à consulter
+          format: int32
+          example: 1
+        pageSize:
+          type: integer
+          description: Nombre de résultats par page (max 100)
+          format: int32
+          example: 10
+        publicationDate:
+          $ref: '#/components/schemas/DatePeriod'
+        signatureDate:
+          $ref: '#/components/schemas/DatePeriod'
+        sort:
+          type: string
+          description: Ordre de tri
+          example: DATE_PUBLI_ASC
+          enum:
+          - DATE_PUBLI_ASC
+          - DATE_PUBLI_DESC
+      description: Requête paginée pour lister les textes Lois, Décrets, Arrêtés
+    ChronolegiResponse:
+      title: ChronolegiResponse
+      type: object
+      properties:
+        datePublication:
+          type: string
+          description: Date de publication
+          format: date-time
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        regroupements:
+          type: array
+          description: Liste des regroupements d'années
+          items:
+            $ref: '#/components/schemas/RegroupementDTO'
+      description: Réponse de consultation d'un chronolegi
+    ActionChronoDTO:
+      title: ActionChronoDTO
+      type: object
+      properties:
+        action:
+          type: string
+          description: Action effectuée
+          example: MODIFICATION
+          enum:
+          - CREATION
+          - CODIFICATION
+          - MODIFICATION
+          - TRANSFERT
+          - ABROGATION
+          - ANNULATION
+          - PEREMPTION
+          - DISJONCTION
+          - RECTIFICATION
+          - SUBSTITUTION
+          - DEPLACE
+          - VERSEMENT
+          - DENONCIATION
+          - REMPLACEMENT
+          - EXTENSION
+          - ELARGISSEMENT
+        parents:
+          type: object
+          properties: {}
+          description: Map listant les noeuds parents sur lesquels les actions sont
+            faites (texte, section..). La clé correspond à l'ID du parent.
+      description: Objet définissant une action effectuée par un article sur un texte
+    ArticleModificateurDTO:
+      title: ArticleModificateurDTO
+      type: object
+      properties:
+        actions:
+          type: object
+          properties: {}
+          description: Map listant les actions effectuées par cet article sur le texte.
+            La clé correspond au type d'action.
+        dateDebutCible:
+          type: string
+          description: Date de début de l'article
+          format: date-time
+        id:
+          type: string
+          description: ID de l'article
+          example: LEGIARTI000036828112
+        nature:
+          type: string
+          description: Nature/type de l'article
+          example: CODE
+          enum:
+          - LODA
+          - JORF
+          - CODE
+          - KALI
+          - JORFCONT
+        title:
+          type: string
+          description: Titre de l'article modificateur (titre du texte + numéro article)
+          example: LOI n°2018-287 du 20 avril 2018 - art. 6
+      description: Objet définissant un article ayant modifié un texte
+    KaliTextConsultRequest:
+      title: KaliTextConsultRequest
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant du texte ou d'un de ses éléments enfants (section/article)
+          example: KALITEXT000005677408
+      description: Requête de consultation d'un texte d'une convention collective
+    FileMetadata:
+      title: FileMetadata
+      type: object
+      properties:
+        complementNumber:
+          type: string
+          description: Numéro complémentaire pour le fonds JORF
+        datePubli:
+          type: string
+          description: Date de publication
+          format: date-time
+        displaySize:
+          type: string
+          description: Taille du fichier avec son unité
+          example: 586 Ko
+        fileName:
+          type: string
+          description: Nom du fichier
+          example: joe_20161230_0303_c000.pdf.sig
+        id:
+          type: string
+          description: Identifiant du fichier dans la base de données
+          example: joe_20161230_0303_c000.pdf.sig
+        num:
+          type: string
+          description: Numéro du JO pour le fonds JORF
+          example: "0303"
+        origine:
+          type: string
+          description: Origine du fichier
+          example: JOE_INAP
+        pathToFile:
+          type: string
+          description: Chemin relatif vers le fichier
+          example: /JOEA/2016/1230/joe_20161230_0303_c000.pdf.sig
+        size:
+          type: integer
+          description: Taille du fichier en octets
+          format: int64
+          example: 600055
+        type:
+          type: string
+          description: Type de fichier
+          example: joe
+      description: Objet représentant les métadonnées d'un fichier
+    ModificationDTO:
+      title: ModificationDTO
+      type: object
+      properties:
+        modificateur:
+          $ref: '#/components/schemas/ModificateurDTO'
+        type:
+          type: string
+          description: Type de modification
+          example: TRANSFERT
+          enum:
+          - CREATION
+          - CODIFICATION
+          - MODIFICATION
+          - TRANSFERT
+          - ABROGATION
+          - ANNULATION
+          - PEREMPTION
+          - DISJONCTION
+          - RECTIFICATION
+          - SUBSTITUTION
+          - DEPLACE
+          - VERSEMENT
+          - DENONCIATION
+          - REMPLACEMENT
+          - EXTENSION
+          - ELARGISSEMENT
+      description: Objet représentant une modification
+    GetListArticleResponse:
+      title: GetListArticleResponse
+      type: object
+      properties:
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        listArticle:
+          type: array
+          description: Liste des versions de l'article
+          items:
+            $ref: '#/components/schemas/Article'
+      description: réponse de consultation d'un article par son Chronical ID
+    Attachment:
+      title: Attachment
+      type: object
+      properties:
+        author:
+          type: string
+          description: Auteur
+        content:
+          type: string
+          description: Contenu du fichier textuel
+        content_length:
+          type: integer
+          description: Taille du contenu
+          format: int64
+          example: 5503
+        content_type:
+          type: string
+          description: Type de fichier
+          example: application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        date:
+          type: string
+          description: Date
+          format: date-time
+        keywords:
+          type: string
+          description: Mots clés
+        language:
+          type: string
+          description: Langue
+          example: fr
+        name:
+          type: string
+          description: Nom
+        title:
+          type: string
+          description: Titre
+      description: Objet représentant un fichier joint à un texte
+    SameNumArticleRequest:
+      title: SameNumArticleRequest
+      required:
+      - articleCid
+      - articleNum
+      - date
+      - textCid
+      type: object
+      properties:
+        articleCid:
+          type: string
+          description: Chronical ID de l'article
+          example: LEGIARTI000006419319
+        articleNum:
+          type: string
+          description: Numéro de l'article
+          example: "16"
+        date:
+          type: string
+          description: Date de référence
+          format: date-time
+        textCid:
+          type: string
+          description: Chronical ID du texte
+          example: LEGITEXT000006070721
+      description: Requête de récupération des articles, ayant un Chronical ID différent
+        et portant le même numéro dans toutes les versions du texte
+    LiensRelatifsDTO:
+      title: LiensRelatifsDTO
+      type: object
+      properties:
+        cidParent:
+          type: string
+          description: Chronical ID du parent de l'élément lié. (Renseigné si besoin
+            pour créer le lien vers l'élément)
+        cidText:
+          type: string
+          description: Chronical ID du texte de l'élément lié
+          example: JORFTEXT000000869867
+        dateVigeur:
+          type: string
+          description: Date pour création du lien
+          format: date-time
+        id:
+          type: string
+          description: Identifiant de l'élément lié
+          example: LEGIARTI000033012294
+        name:
+          type: string
+          description: Nom de l'élément lié
+          example: Code du travail - art. L5143-1 (V)
+        nature:
+          type: string
+          description: Nature de texte de l'élément lié
+          example: CODE
+          enum:
+          - LODA
+          - JORF
+          - CODE
+          - KALI
+          - JORFCONT
+      description: Objet représentant un lien vers un autre élément
+    Map-string.SuggestValue-:
+      title: Map«string,SuggestValue»
+      type: object
+    KaliContConsultRequest:
+      title: KaliContConsultRequest
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant de la convention collective ou son numéro IDCC
+          example: KALICONT000005635384
+      description: Requête de consultation d'une convention collective
+    SuggestAccoValue:
+      title: SuggestAccoValue
+      type: object
+      properties:
+        raisonSociale:
+          type: string
+          description: Raison sociale
+        siret:
+          type: string
+          description: SIRET
+      description: Objet représentant une suggestion constituée d'un SIRET + raison
+        sociale d'une entreprise pour les accords d'entreprises
+    ArticleDTO:
+      title: ArticleDTO
+      type: object
+      properties:
+        cid:
+          type: string
+          description: Chronical ID de l'article (Non utilisé)
+        dateDebut:
+          type: string
+          description: Date de début de la version de l'article
+          format: date-time
+        dateFin:
+          type: string
+          description: Date de fin de la version de l'article
+          format: date-time
+        id:
+          type: string
+          description: Identifiant de l'article
+          example: LEGIARTI000006687518
+        idText:
+          type: string
+          description: Identifiant du texte de l'article
+          example: LEGITEXT000006072665
+        modifications:
+          type: array
+          description: Liste des modifications sur le texte (Utilisée pour les anciens
+            textes)
+          items:
+            $ref: '#/components/schemas/ModificationDTO'
+        name:
+          type: string
+          description: Nom de l'article (concaténation titre texte + num article)
+          example: Code de la santé publique - art. L2211-1 (V)
+        nature:
+          type: string
+          description: Nature du texte de l'article
+          example: CODE
+          enum:
+          - LODA
+          - JORF
+          - CODE
+          - KALI
+          - JORFCONT
+      description: Objet représentant un lien vers un article
+    LegislaturesListResponse:
+      title: LegislaturesListResponse
+      type: object
+      properties:
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        legislatures:
+          type: array
+          description: Liste des législatures
+          items:
+            $ref: '#/components/schemas/Legislature'
+      description: Résultat d'une requête pour lister les législatures
+    Map-string.SuggestAccoValue-:
+      title: Map«string,SuggestAccoValue»
+      type: object
+    ConsultCnilTextResponse:
+      title: ConsultCnilTextResponse
+      type: object
+      properties:
+        dereferenced:
+          type: boolean
+          description: Identifie si le contenu est référençable par les robots d'indexation
+          example: true
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        text:
+          $ref: '#/components/schemas/TexteSimple'
+      description: réponse de consultation d'un texte CNIL
+    ConsultDossierLegislatifResponse:
+      title: ConsultDossierLegislatifResponse
+      type: object
+      properties:
+        dereferenced:
+          type: boolean
+          description: Identifie si le contenu est référençable par les robots d'indexation
+          example: true
+        dossierLegislatif:
+          $ref: '#/components/schemas/DossierLegislatif'
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+      description: Réponse à une requête de consultation d'un dossier législatif
+    JorfConsultRequest:
+      title: JorfConsultRequest
+      required:
+      - textCid
+      type: object
+      properties:
+        textCid:
+          type: string
+          description: Chronical ID de l'élément
+          example: JORFTEXT000033736934
+      description: requête de consultation d'un texte JORF
+    ConsultAccoResponse:
+      title: ConsultAccoResponse
+      type: object
+      properties:
+        acco:
+          $ref: '#/components/schemas/Accord'
+        dereferenced:
+          type: boolean
+          description: Identifie si le contenu est référençable par les robots d'indexation
+          example: true
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+      description: Réponse à une requête de consultation d'un accord d'entreprise
+    Facet:
+      title: Facet
+      type: object
+      properties:
+        childs:
+          type: object
+          properties: {}
+          description: Liste au format map des éléments enfants d'un élément particulier
+            d'une facette ainsi que le nombre de résultats associés. La clé permet
+            de déterminer le parent de cette liste dans les libellés values.
+          example:
+            TRIBUNAL_ADMINISTATIF:
+              values:
+                Bordeaux: 2
+                Lille: 8
+        facetElem:
+          type: string
+          description: Nom de la facette
+          example: JURIDICTION_NATURE
+        field:
+          type: string
+          description: Nom du champ représentant la facette
+          example: natureJuridiction
+        values:
+          type: object
+          properties: {}
+          description: Liste au format map des libellés d'une facette ainsi que le
+            nombre de résultats associés
+          example:
+            COURS_COMPTES: 3295
+            COURS_APPEL: 35
+            TRIBUNAL_ADMINISTATIF: 10
+      description: Objet représentant une facette
+    ChronoLegiArticleRequest:
+      title: ChronoLegiArticleRequest
+      required:
+      - elementCid
+      - textCid
+      type: object
+      properties:
+        elementCid:
+          type: string
+          description: Chronical ID de l'article
+          example: LEGIARTI000006070721
+        textCid:
+          type: string
+          description: Chronical ID du texte
+          example: LEGITEXT000006070721
+      description: requête de consultation de la liste des versions de l'article de
+        manière chronologique.
+    DatesWithNoJoResponse:
+      title: DatesWithNoJoResponse
+      type: object
+      properties:
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        lstDateDisabled:
+          type: array
+          description: Liste des dates
+          example:
+          - -3187209600000
+          - -3187123200000
+          - -3187036800000
+          items:
+            type: string
+            format: date-time
+      description: Résultat d'une requête pour récupérer les dates pour lesquelles
+        il n'y a pas eu de publication du Journal officiel
+    LoginResponse:
+      title: LoginResponse
+      type: object
+      properties:
+        civility:
+          type: string
+          description: Civilité
+          example: Mr
+        connexionDate:
+          type: string
+          description: Date de la connexion effective
+          format: date-time
+        creationDate:
+          type: string
+          description: Date de création du compte
+          format: date-time
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        firstName:
+          type: string
+          description: Prénom
+          example: Jean
+        id:
+          type: string
+          description: Identifiant
+        lastConnexionDate:
+          type: string
+          description: Date de la dernière connexion
+          format: date-time
+        lastName:
+          type: string
+          description: Nom de famille
+          example: Dupond
+        mail:
+          type: string
+          description: Adresse email
+          example: jean.dupond@mail.fr
+      description: Objet décrivant un utilisateur suite à une connexion réussie
+    StructureTxt:
+      title: StructureTxt
+      type: object
+      properties:
+        liens:
+          type: array
+          description: Liste des liens vers les textes de premier niveau dans le conteneur
+          items:
+            $ref: '#/components/schemas/LienTxt'
+        tms:
+          type: array
+          description: Liste des sections de premier niveau dans le conteneur
+          items:
+            $ref: '#/components/schemas/Tms'
+      description: Objet représentant la structure d'un conteneur
+    DetailContext:
+      title: DetailContext
+      type: object
+      properties:
+        cid:
+          type: string
+          description: Chronical ID
+          example: LEGISCTA000006179574
+        debut:
+          type: string
+          description: Date de début
+          example: 1979-07-01
+        etat:
+          type: string
+          description: Etat juridique
+          example: VIGUEUR
+        fin:
+          type: string
+          description: Date de fin
+          example: 2999-01-01
+        id:
+          type: string
+          description: Identifiant technique
+          example: LEGISCTA000006179574
+        titre:
+          type: string
+          description: Titre
+          example: '2e Sous-section : Revenu global'
+        xPath:
+          type: string
+          description: Chemin pour arriver à l'élément dans le XML
+          example: /ARTICLE/CONTEXTE/TEXTE/TM/TM/TM/TM/TM/TM/TITRE_TM
+      description: Objet représentant le détail d'un élément du contexte
+    Syndicat:
+      title: Syndicat
+      type: object
+      properties:
+        code:
+          type: string
+          description: Code
+          example: "3"
+        libelle:
+          type: string
+          description: Libellé
+          example: CFDT
+      description: Objet représentant un syndicat
+    Dossier:
+      title: Dossier
+      type: object
+      properties:
+        contenuDossier:
+          type: string
+          description: Contenu html du dossier
+        idTexte:
+          type: string
+          description: Identifiant
+        libelleTexte:
+          type: string
+          description: Libellé
+          example: Projet de loi
+      description: Objet représentant un dossier pour les dossiers legislatifs
+    ParentChronoDTO:
+      title: ParentChronoDTO
+      type: object
+      properties:
+        articlesCibles:
+          type: object
+          properties: {}
+          description: Map listant les articles ciblés par les modifications. La clé
+            correspond à l'ID de l'article cible.
+        cid:
+          type: string
+          description: Chronical ID de l'élément
+          example: LEGISCTA000032008380
+        cidText:
+          type: string
+          description: Chronical ID du texte
+          example: LEGITEXT000006070721
+        dateDebut:
+          type: string
+          description: Date de début de la version du noeud impactée
+          format: date-time
+        id:
+          type: string
+          description: Identifiant unique de l'élément
+          example: LEGISCTA000032008380
+        name:
+          type: string
+          description: Nom/titre du parent
+          example: 'Paragraphe 1 : La capacité'
+        nature:
+          type: string
+          description: Nature/type du texte
+          example: CODE
+          enum:
+          - LODA
+          - JORF
+          - CODE
+          - KALI
+          - JORFCONT
+        sectionsCibles:
+          type: object
+          properties: {}
+          description: Map listant les sections ciblées par les modifications. La
+            clé correspond à l'ID de la section cible.
+        texteCible:
+          $ref: '#/components/schemas/CibleChronoDTO'
+      description: Objet définissant le nœud parent, dans le chronolegi ou chronokali,
+        sur lequel est appliquée une modification
+    SuggestResponse:
+      title: SuggestResponse
+      type: object
+      properties:
+        executionTime:
+          type: integer
+          format: int64
+        results:
+          type: object
+          properties: {}
+          description: Liste des suggestions retournées. La clé représente l'id du
+            texte/section/article
+        totalResultNumber:
+          type: integer
+          format: int64
+      description: Résultat de recherche de suggestions. Retourne des titres de texte/section/article
+    DatePeriod:
+      title: DatePeriod
+      type: object
+      properties:
+        end:
+          type: string
+          description: Date de fin
+          format: date-time
+        start:
+          type: string
+          description: Date de début
+          format: date-time
+      description: Objet représentant une période de recherche
+    TexteSommaire:
+      title: TexteSommaire
+      type: object
+      properties:
+        abstrats:
+          type: string
+          description: Abstracts
+        autreResume:
+          type: string
+          description: Autre résumé
+        id:
+          type: string
+          description: Identifiant
+        resumePrincipal:
+          type: string
+          description: Résumé principal
+      description: Objet représentant un sommaire
+    ConsultDateRequest:
+      title: ConsultDateRequest
+      type: object
+      properties:
+        dayOfMonth:
+          type: integer
+          description: Jour
+          format: int32
+          example: 1
+        month:
+          type: integer
+          description: Mois
+          format: int32
+          example: 1
+        year:
+          type: integer
+          description: Année
+          format: int32
+          example: 2019
+      description: Objet date permettant la recherche
+    LienTxt:
+      title: LienTxt
+      type: object
+      properties:
+        autorite:
+          type: string
+          description: Autorité lié au texte
+        dateModif:
+          type: string
+          description: Dernière date de modification du texte
+          format: date-time
+        emetteur:
+          type: string
+          description: Émetteur
+        etat:
+          type: string
+          description: Etat juridique du texte
+        id:
+          type: string
+          description: Identifiant du texte
+        ministere:
+          type: string
+          description: Ministère lié au texte
+        nature:
+          type: string
+          description: Nature
+        numSequence:
+          type: integer
+          description: Numéro de séquence
+          format: int64
+        ordre:
+          type: integer
+          description: Numéro d'ordre
+          format: int64
+        titre:
+          type: string
+          description: Titre
+      description: Objet représentant un lien vers un texte
+    JorfContConsultRequest:
+      title: JorfContConsultRequest
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date de référence
+          format: date-time
+        end:
+          $ref: '#/components/schemas/ConsultDateRequest'
+        highlightActivated:
+          type: boolean
+          description: Activer/Désactiver le highlight, dans la réponse, du texte
+            recherché
+          example: true
+        id:
+          type: string
+          description: identifiant du conteneur JORF recherché
+          example: JORFCONT000022470431
+        num:
+          type: string
+          description: numéro de JORF recherché
+          example: "0022"
+        pageNumber:
+          type: integer
+          description: Numéro de la page à consulter
+          format: int32
+          example: 1
+        pageSize:
+          type: integer
+          description: Nombre d'éléments par page (max 100)
+          format: int32
+          example: 10
+        searchText:
+          type: string
+          description: Texte à rechercher
+          example: mariage
+        start:
+          $ref: '#/components/schemas/ConsultDateRequest'
+      description: requête de consultation d'un conteneur JORF
+    LienCitation:
+      title: LienCitation
+      type: object
+      properties:
+        articleId:
+          type: string
+          description: Identifiant de l'article lié
+          example: LEGIARTI000032930490
+        articleNum:
+          type: string
+          description: Numéro de l'article lié
+          example: "53"
+        date:
+          type: string
+          format: date-time
+        dateDebut:
+          type: string
+          format: date-time
+        datePubli:
+          type: string
+          format: date-time
+        linkOrientation:
+          type: string
+          description: Sens de la modification
+          example: cible
+        linkType:
+          type: string
+          description: Type de lien
+          example: MODIFIE
+        natureText:
+          type: string
+          description: Nature du texte lié
+          example: LOI
+        numTexte:
+          type: string
+        parentCid:
+          type: string
+        textCid:
+          type: string
+          description: Chronical ID du texte lié
+          example: JORFTEXT000030978561
+        textTitle:
+          type: string
+          description: Titre du texte lié
+          example: LOI n°2015-990 du 6 août 2015 - art. 53 (V)
+      description: Objet représentant un lien de citation
+    ConsultKaliContResponse:
+      title: ConsultKaliContResponse
+      type: object
+      properties:
+        activitePro:
+          type: array
+          description: Liste des activités professionelles
+          items:
+            type: string
+        categorisation:
+          type: array
+          description: Liste des catégories
+          items:
+            type: string
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        id:
+          type: string
+          description: Identifiant
+          example: KALICONT000005635384
+        nature:
+          type: string
+          description: Nature
+          example: IDCC
+        num:
+          type: string
+          description: Numéro
+          example: "1261"
+        numeroTexte:
+          type: string
+          description: numéro du texte
+          example: IDCC 1261
+        sections:
+          type: array
+          description: Liste des conventions collectives
+          items:
+            $ref: '#/components/schemas/ConsultSection'
+        texteBaseId:
+          type: array
+          description: Liste des identifiants des textes de base
+          example:
+          - KALITEXT000005677408
+          items:
+            type: string
+        titre:
+          type: string
+          description: Titre
+          example: 'Convention collective nationale des acteurs du lien social et
+            familial : centres sociaux et socioculturels, associations d''accueil
+            de jeunes enfants, associations de développement social local  du 4 juin
+            1983.  Etendue par arrêté du 22 janvier 1987 JORF 12 février 1987. (1)'
+      description: Réponse à une requête de consultation d'une convention collective
+    DossierLegislatifRequest:
+      title: DossierLegislatifRequest
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant du dossier législatif
+          example: JORFDOLE000038049286
+      description: Requête de consultation d'un dossier législatif
+    CodeListResult:
+      title: CodeListResult
+      type: object
+      properties:
+        cid:
+          type: string
+          description: Chronical ID
+          example: LEGITEXT000006070721
+        dateDebut:
+          type: string
+          description: Date de début
+          format: date-time
+        dateFin:
+          type: string
+          description: Date de fin
+          format: date-time
+        etat:
+          type: string
+          description: Etat juridique
+          example: VIGUEUR
+        id:
+          type: string
+          description: Identifiant unique
+          example: LEGITEXT000006070721
+        lastUpdate:
+          type: string
+          description: Dernière date de mise à jour
+          format: date-time
+        titre:
+          type: string
+          description: Titre du code
+          example: Code civil
+      description: Objet représentant un résultat de code
+    CritereDTO:
+      title: CritereDTO
+      required:
+      - operateur
+      - typeRecherche
+      - valeur
+      type: object
+      properties:
+        criteres:
+          type: array
+          description: Sous-critère/Sous-groupe de critères
+          example:
+          - typeRecherche: UN_DES_MOTS
+            valeur: soins
+            operateur: ET
+          - typeRecherche: TOUS_LES_MOTS_DANS_UN_CHAMP
+            valeur: fonction publique
+            proximite: "3"
+            operateur: ET
+          items:
+            $ref: '#/components/schemas/CritereDTO'
+        operateur:
+          type: string
+          description: Opérateur entre les sous-critères
+          example: ET
+          enum:
+          - ET
+          - OU
+        proximite:
+          type: integer
+          description: Proximité maximum entre les mots du champ valeur. La proximité
+            représente la distance maximale, en mots, entre deux termes recherchés.
+          format: int32
+          example: 2
+        typeRecherche:
+          type: string
+          description: Type de recherche effectuée
+          example: UN_DES_MOTS
+          enum:
+          - UN_DES_MOTS
+          - EXACTE
+          - TOUS_LES_MOTS_DANS_UN_CHAMP
+          - AUCUN_DES_MOTS
+        valeur:
+          type: string
+          description: Mot(s)/expression recherchés
+          example: dispositions
+      description: Objet décrivant un critère ou un groupe de critères
+    SearchExtract:
+      title: SearchExtract
+      type: object
+      properties:
+        dateDebut:
+          type: string
+          format: date-time
+        dateFin:
+          type: string
+          format: date-time
+        dateVersion:
+          type: string
+          format: date-time
+        id:
+          type: string
+        legalStatus:
+          type: string
+          enum:
+          - VIGUEUR
+          - ABROGE_DIFF
+          - VIGUEUR_DIFF
+          - VIGUEUR_ETEN
+          - ABROGE
+          - PERIME
+          - ANNULE
+          - MODIFIE
+          - DISJOINT
+          - SUBSTITUE
+          - TRANSFERE
+          - INITIALE
+          - MODIFIE_MORT_NE
+          - SANS_ETAT
+          - DENONCE
+          - REMPLACE
+          - VIGUEUR_NON_ETEN
+        searchFieldName:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+        values:
+          type: array
+          items:
+            type: string
+    LienModification:
+      title: LienModification
+      type: object
+      properties:
+        articleId:
+          type: string
+          description: Identifiant de l'article lié
+          example: LEGIARTI000032930490
+        articleNum:
+          type: string
+          description: Numéro de l'article lié
+          example: "53"
+        dateDebutCible:
+          type: string
+          description: Date de début de la cible
+          example: 2016-07-24
+        datePubliTexte:
+          type: string
+          description: Date de publication du texte lié
+          example: 2015-08-07
+        dateSignaTexte:
+          type: string
+          description: Date de signature du texte lié
+          example: 2015-08-06
+        linkOrientation:
+          type: string
+          description: Sens de la modification
+          example: cible
+        linkType:
+          type: string
+          description: Type de lien
+          example: MODIFIE
+        natureText:
+          type: string
+          description: Nature du texte lié
+          example: LOI
+        textCid:
+          type: string
+          description: Chronical ID du texte lié
+          example: JORFTEXT000030978561
+        textTitle:
+          type: string
+          description: Titre du texte lié
+          example: LOI n°2015-990 du 6 août 2015 - art. 53 (V)
+      description: Objet représentant un lien de modification
+    KaliContConsultIdccRequest:
+      title: KaliContConsultIdccRequest
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant de la convention collective ou son numéro IDCC
+          example: "1261"
+      description: Requête de consultation d'une convention collective
+    SearchTitle:
+      title: SearchTitle
+      type: object
+      properties:
+        cid:
+          type: string
+          description: Chronical ID du texte
+          example: LEGITEXT000006070721
+        endDate:
+          type: string
+          description: Date de fin de la version
+          format: date-time
+        id:
+          type: string
+          description: Identifiant du texte
+        legalStatus:
+          type: string
+          description: Etat juridique de la version
+        nature:
+          type: string
+          description: Nature du texte
+        startDate:
+          type: string
+          description: Date de début de la version
+          format: date-time
+        title:
+          type: string
+          description: Titre
+          example: Code civil
+      description: Objet décrivant la version d'un texte
+    TexteReference:
+      title: TexteReference
+      type: object
+      properties:
+        texteReference:
+          type: string
+          description: Texte de référence
+        url:
+          type: string
+          description: Lien vers le texte
+      description: Objet représentant un texte de référence
+    LawDecreeConsultRequest:
+      title: LawDecreeConsultRequest
+      required:
+      - date
+      - textId
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date de consultation
+          format: date-time
+        textId:
+          type: string
+          description: Chronical ID du texte
+          example: JORFTEXT000000882738
+      description: Requête de consultation d'un texte du fonds Legi.
+    SectionsRevisionArticleResponse:
+      title: SectionsRevisionArticleResponse
+      type: object
+      properties:
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        newTexts:
+          type: array
+          description: Liste des nouveaux textes liés à l'article
+          items:
+            $ref: '#/components/schemas/ArticleDTO'
+        oldTexts:
+          type: array
+          description: Liste des anciens textes liés à l'article
+          items:
+            $ref: '#/components/schemas/ArticleDTO'
+      description: Réponse à une requête de récupération des liens de concordance
+        d'un article ou des articles avec le même numéro
+    Arborescence:
+      title: Arborescence
+      type: object
+      properties:
+        liens:
+          type: array
+          description: Liste des liens de premier niveau
+          items:
+            $ref: '#/components/schemas/Lien'
+        niveaux:
+          type: array
+          description: Liste des niveaux enfants
+          items:
+            $ref: '#/components/schemas/Niveau'
+      description: Objet représentant une arborescence de dossier legislatif
+    VersionDTO:
+      title: VersionDTO
+      type: object
+      properties:
+        articlesModificateurs:
+          type: object
+          properties: {}
+          description: Map listant les articles ayant apportés des modifications pour
+            cette version. La clé correspond à la date de la version au format AAAA-MM-JJ.
+        dateDebut:
+          type: string
+          description: Date de début de la version
+          format: date-time
+        isEndVersion:
+          type: boolean
+          description: Détermine s'il s'agit de la dernière version.
+      description: Objet définissant une version d'un texte
+    AccoConsultRequest:
+      title: AccoConsultRequest
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          type: string
+          description: Identifiant de l'accord d'entreprise
+          example: ACCOTEXT000037731479
+      description: Requête de consultation d'un accord d'entreprise
+    CodeListRequest:
+      title: CodeListRequest
+      required:
+      - pageNumber
+      - pageSize
+      type: object
+      properties:
+        codeName:
+          type: string
+          description: Titre de code à chercher
+          example: Code civil
+        pageNumber:
+          type: integer
+          description: Numéro de la page à consulter
+          format: int32
+          example: 1
+        pageSize:
+          type: integer
+          description: Nombre de résultats par page (max 100)
+          format: int32
+          example: 10
+        sort:
+          type: string
+          description: Ordre de tri
+          example: TITLE_ASC
+          enum:
+          - TITLE_ASC
+        states:
+          type: array
+          description: Liste des états juridiques à filtrer
+          example:
+          - VIGUEUR
+          - ABROGE
+          - VIGUEUR_DIFF
+          items:
+            type: string
+            enum:
+            - VIGUEUR
+            - ABROGE_DIFF
+            - VIGUEUR_DIFF
+            - VIGUEUR_ETEN
+            - ABROGE
+            - PERIME
+            - ANNULE
+            - MODIFIE
+            - DISJOINT
+            - SUBSTITUE
+            - TRANSFERE
+            - INITIALE
+            - MODIFIE_MORT_NE
+            - SANS_ETAT
+            - DENONCE
+            - REMPLACE
+            - VIGUEUR_NON_ETEN
+      description: Requête paginée pour lister les codes
+    CnilConsultRequest:
+      title: CnilConsultRequest
+      required:
+      - textId
+      type: object
+      properties:
+        textId:
+          type: string
+          description: Identifiant du texte
+          example: CNILTEXT000017652361
+      description: requête de consultation d'un texte CNIL
+    GetJosResponse:
+      title: GetJosResponse
+      type: object
+      properties:
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        items:
+          type: array
+          description: Liste des éléments trouvés
+          items:
+            $ref: '#/components/schemas/GetJorfContResponseItem'
+        totalNbResult:
+          type: integer
+          description: Nombre de résultats
+          format: int64
+          example: 12
+      description: Réponse à une requête de recherche de JO
+    LegiConsultRequest:
+      title: LegiConsultRequest
+      required:
+      - date
+      - textId
+      type: object
+      properties:
+        date:
+          type: string
+          description: Date de consultation
+          format: date-time
+        textId:
+          type: string
+          description: Chronical ID du texte
+          example: JORFTEXT000000882738
+      description: Requête de consultation d'un texte du fonds Legi.
+    TextTitle:
+      title: TextTitle
+      type: object
+      properties:
+        appliGeo:
+          type: string
+          description: Portée Géographique
+        cid:
+          type: string
+          description: Chronical ID
+        codesNomenclatures:
+          type: array
+          description: Liste des code de nomenclature
+          items:
+            type: string
+        dateDebut:
+          type: string
+          description: Date de début
+          format: date-time
+        dateFin:
+          type: string
+          description: Date de fin
+          format: date-time
+        datePubli:
+          type: string
+          description: Date de publication
+          format: date-time
+        datePubliComputed:
+          type: string
+          description: Date de publication de la version courante
+          format: date-time
+        dateTexte:
+          type: string
+          description: Date du texte
+          format: date-time
+        dateTexteComputed:
+          type: string
+          description: Date de la version courante du texte
+          format: date-time
+        dossiersLegislatifs:
+          type: array
+          description: Liste des dossiers législatifs
+          items:
+            $ref: '#/components/schemas/DossierLegislatif'
+        etat:
+          type: string
+          description: Etat juridique
+        id:
+          type: string
+          description: Identifiant
+        nature:
+          type: string
+          description: Nature du texte
+        nor:
+          type: string
+          description: Numéro NOR
+        nota:
+          type: string
+          description: Nota
+        notice:
+          type: string
+          description: Notice
+        num:
+          type: string
+          description: Numéro du texte
+        numParution:
+          type: string
+          description: Numéro de parution
+        originePubli:
+          type: string
+          description: Origine de la publication
+        signataires:
+          type: string
+          description: Signataires
+        titre:
+          type: string
+          description: Titre
+        titreLong:
+          type: string
+          description: Titre long
+        travauxPreparatoires:
+          type: string
+          description: Travaux préparatoires
+        visas:
+          type: string
+          description: Visas
+      description: Objet représentant les métadonnées d'une version d'un texte
+    LastNElementRequest:
+      title: LastNElementRequest
+      required:
+      - nbElement
+      type: object
+      properties:
+        nbElement:
+          type: integer
+          description: Nombre de JO à remonter
+          format: int32
+          example: 5
+      description: requête de récupération des derniers JO
+    Tms:
+      title: Tms
+      type: object
+      properties:
+        liensTxt:
+          type: array
+          description: Liste des liens vers les textes de la section courante
+          items:
+            $ref: '#/components/schemas/LienTxt'
+        niv:
+          type: integer
+          description: Niveau de la section
+          format: int32
+          example: 1
+        ordre:
+          type: integer
+          description: Numéro d'ordre de la section
+          format: int32
+          example: 3
+        titre:
+          type: string
+          description: Titre de la section
+        tms:
+          type: array
+          description: Liste des sections enfants de la section courante
+          items:
+            $ref: '#/components/schemas/Tms'
+      description: Objet représentant une section d'un conteneur
+    DossiersLegislatifsListResponse:
+      title: DossiersLegislatifsListResponse
+      type: object
+      properties:
+        dossiersLegislatifs:
+          type: array
+          description: Liste des dossiers législatifs répondant à la requête
+          items:
+            $ref: '#/components/schemas/DossierLegislatifResult'
+        executionTime:
+          type: integer
+          description: Temps d'exécution
+          format: int64
+        legislature:
+          $ref: '#/components/schemas/Legislature'
+      description: Résultat d'une requête pour lister les dossiers législatifs d'une
+        législature
+  securitySchemes:
+    OAuthImplicit:
+      type: oauth2
+      description: OAuth
+      flows:
+        implicit:
+          authorizationUrl: https://oauth.aife.economie.gouv.fr/api/oauth/authorize
+          scopes:
+            openid: ""
+    OAuthAccessCode:
+      type: oauth2
+      description: OAuth
+      flows:
+        authorizationCode:
+          authorizationUrl: https://oauth.aife.economie.gouv.fr/api/oauth/authorize
+          tokenUrl: https://oauth.aife.economie.gouv.fr/api/oauth/token
+          scopes:
+            openid: ""
