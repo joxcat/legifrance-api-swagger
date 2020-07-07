@@ -28,6 +28,30 @@ security:
 - OAuthAccessCode:
   - openid
 paths:
+  /api/oauth/token:
+    post:
+      summary: Génère un token d'authentification
+      description: Permet de générer un "Bearer Token" pour utiliser l'API
+      servers:
+        - url: https://oauth.aife.economie.gouv.fr/api/oauth/token
+          description: Serveur d'authentification
+      requestBody:
+        description: request
+        content:
+          application/x-www-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OauthImplicitRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OauthImplicitResponse'
+        '401':
+          description: Unauthorized
+          content: {}
   /chrono/textCid/{textCid}:
     get:
       summary: Vérifie si un texte possède des versions
@@ -1426,6 +1450,44 @@ paths:
       x-codegen-request-body-name: relatedLinksArticleRequest
 components:
   schemas:
+    OauthImplicitRequest:
+      title: OauthImplicitRequest
+      type: object
+      properties:
+        grant_type:
+          type: string
+          enum: [client_credentials]
+          required: true
+        scope:
+          type: string
+          enum: [openid]
+        client_id:
+          type: string
+          required: true
+          example: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+          description: Oauth2 Client-ID
+        client_secret:
+          type: string
+          required: true
+          example: XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+          description: Oauth2 Client-Secret
+    OauthImplicitResponse:
+      title: OauthImplicitResponse
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: "Token à ajouter aux requêtes sous la forme du header 'Authorization: Bearer {access_token}'"
+        token_type:
+          type: string
+          enum: [Bearer]
+        expires_in:
+          type: integer
+          format: int32
+          example: 3600
+        scope:
+          type: string
+          example: openid resource.READ
     KaliTextConsultArticleRequest:
       title: KaliTextConsultArticleRequest
       required:
