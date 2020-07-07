@@ -22,16 +22,13 @@ info:
   version: 0.3.1
 servers:
 - url: https://api.aife.economie.gouv.fr/dila/legifrance-beta/lf-engine-app
-security:
-- OAuthImplicit:
-  - openid
-- OAuthAccessCode:
-  - openid
 paths:
   /api/oauth/token:
     post:
       summary: Génère un token d'authentification
       description: Permet de générer un "Bearer Token" pour utiliser l'API
+      tags:
+        - Authentification
       servers:
         - url: https://oauth.aife.economie.gouv.fr/api/oauth/token
           description: Serveur d'authentification
@@ -61,6 +58,8 @@ paths:
       description: Indique si un texte possède des versions chrono à partir de l'identifiant
         du texte
       operationId: hasVersionByTextCidUsingGET
+      tags:
+        - Article
       parameters:
       - name: textCid
         in: path
@@ -92,6 +91,8 @@ paths:
       summary: Liste de sommaire JORF
       description: Récupère la liste de conteneurs/sommaires JORF
       operationId: displayJorfContUsingPOST
+      tags:
+        - JO
       requestBody:
         description: request
         content:
@@ -127,6 +128,8 @@ paths:
       summary: Contenu d'un dossier législatif
       description: Récupère le contenu d'un dossier legislatif par son identifiant
       operationId: displayDossierLegislatifUsingPOST
+      tags:
+        - Contenu Texte
       requestBody:
         description: request
         content:
@@ -163,6 +166,8 @@ paths:
       description: Permet de récupérer la liste des documents administratifs pour
         une période donnée
       operationId: listDocsAdminsUsingPOST
+      tags:
+        - General
       requestBody:
         description: request
         content:
@@ -199,6 +204,8 @@ paths:
       description: Effectue les suggestions siret et raisons sociales sur les accords
         d'entreprise à partir d'une chaine de caractères
       operationId: siretRcSuggestUsingPOST
+      tags:
+        - General
       requestBody:
         description: request
         content:
@@ -234,6 +241,8 @@ paths:
       summary: Contenu texte fonds JURI
       description: Récupère le contenu d'un texte du fonds JURI à partir de son identifiant
       operationId: displayJuriUsingPOST
+      tags:
+        - Contenu Texte
       requestBody:
         description: request
         content:
@@ -270,6 +279,8 @@ paths:
       description: Récupère une version spécifique d'un texte à partir de l'identifiant
         du texte
       operationId: getVersionByTextCidUsingPOST
+      tags:
+        - Article
       requestBody:
         description: request
         content:
@@ -306,6 +317,8 @@ paths:
       description: Permet de récupérer l'ensemble des tables annuelles pour une période
         donnée
       operationId: getTablesUsingPOST
+      tags:
+        - General
       requestBody:
         description: request
         content:
@@ -342,6 +355,8 @@ paths:
       description: Récupère le contenu d'un texte du fonds LEGI à partir de son identifiant
         et de sa date de vigueur
       operationId: displayLegiPartUsingPOST
+      tags:
+        - Contenu Texte
       requestBody:
         description: legiConsultRequest
         content:
@@ -378,6 +393,8 @@ paths:
       description: Récupère les informations relatives au déploiement et au versionning
         de l'application
       operationId: getCommitIdUsingGET
+      tags:
+        - Debug
       responses:
         '200':
           description: OK
@@ -402,6 +419,8 @@ paths:
       summary: Liste paginée des dossiers législatifs
       description: Récupère les dossiers législatifs dans une liste paginée
       operationId: listDossiersLegislatifsUsingPOST
+      tags:
+        - General
       requestBody:
         description: request
         content:
@@ -438,6 +457,8 @@ paths:
       description: Permet de récupérer l'ensemble des dates pour lesquelles il n'existe
         pas de Journal Officiel
       operationId: getDatesWithoutJoUsingGET
+      tags:
+        - JO
       responses:
         '200':
           description: OK
@@ -462,6 +483,8 @@ paths:
       summary: Liste paginée des conventions
       description: Récupère les conventions dans une liste paginée
       operationId: listConventionsUsingPOST
+      tags:
+        - General
       requestBody:
         description: request
         content:
@@ -497,6 +520,8 @@ paths:
       summary: Contenu texte fonds JORF
       description: Récupère le contenu d'un texte du fonds JORF à partir de son identifiant
       operationId: displayJorfUsingPOST
+      tags:
+        - JO
       requestBody:
         description: jorfConsultRequest
         content:
@@ -532,6 +557,8 @@ paths:
       summary: Derniers journaux officels
       description: Récupère les derniers journaux officiels
       operationId: getLastNJoUsingPOST
+      tags:
+        - JO
       requestBody:
         description: request
         content:
@@ -567,6 +594,8 @@ paths:
       summary: Teste le controller
       description: Retourne pong
       operationId: pingUsingGET_1
+      tags:
+        - Debug
       responses:
         '200':
           description: OK
@@ -592,6 +621,8 @@ paths:
       description: Récupère le contenu d'un texte du fonds des conventions collectives
         (KALI) à partir de l'identifiant de son article
       operationId: displayKaliArticleUsingPOST
+      tags:
+        - Texte KALI
       requestBody:
         description: request
         content:
@@ -627,6 +658,8 @@ paths:
       summary: Liste paginée des textes de type LODA
       description: Récupère les éléments de type LODA dans une liste paginée
       operationId: listLODAUsingPOST
+      tags:
+        - General
       requestBody:
         description: Critères de pagination de la liste LODA
         content:
@@ -663,6 +696,8 @@ paths:
       description: Récupère le contenu d'un texte du fonds des conventions collectives
         (KALI) à partir de l'identifiant de sa section
       operationId: displayKaliSectionUsingPOST
+      tags:
+        - Texte KALI
       requestBody:
         description: request
         content:
@@ -699,6 +734,8 @@ paths:
       description: Récupère le contenu d'un conteneur du fonds des conventions collectives
         (KALI) à partir de son identifiant
       operationId: displayKaliContUsingPOST
+      tags:
+        - Texte KALI
       requestBody:
         description: request
         content:
@@ -734,6 +771,8 @@ paths:
       summary: Liste des législatures
       description: Récupère les législatures
       operationId: listLegislaturesUsingPOST
+      tags:
+        - General
       responses:
         '200':
           description: OK
@@ -762,6 +801,8 @@ paths:
       description: Permet de récupérer le titre et la section de la version d'un texte
         la plus proche d'une date donnée
       operationId: searchNearestVersionUsingPOST
+      tags:
+        - General
       requestBody:
         description: request
         content:
@@ -798,6 +839,8 @@ paths:
       description: Récupère la table des matières d'un texte de type CODE à partir
         de son identifiant et de sa date de vigueur
       operationId: displayCodeTableOfContentsUsingPOST
+      tags:
+        - Texte CODE
       requestBody:
         description: codeConsultRequest
         content:
@@ -834,6 +877,8 @@ paths:
       description: Permet de récupérer les liens des articles ayant eu le même numéro
         que l'article en cours dans des versions précédentes du texte
       operationId: displaySameNumArticleUsingPOST
+      tags:
+        - Article
       requestBody:
         description: sameNumArticleRequest
         content:
@@ -869,6 +914,8 @@ paths:
       summary: Liste des liens de concordance d'un article
       description: Permet de récupérer les liens de concordance d'un article
       operationId: displayConcordanceLinksArticleUsingPOST
+      tags:
+        - Article
       requestBody:
         description: concordanceLinksRequest
         content:
@@ -905,6 +952,8 @@ paths:
       description: Récupère le contenu d'un texte de type CODE à partir de son identifiant
         et de sa date de vigueur
       operationId: displayCodeUsingPOST
+      tags:
+        - Texte CODE
       requestBody:
         description: codeConsultRequest
         content:
@@ -941,6 +990,8 @@ paths:
       description: Permet de faire une recherche de documents. On peut préciser le
         fond, les filtres textuels, les facettes et la pagination
       operationId: searchUsingPOST
+      tags:
+        - General
       requestBody:
         description: jsonRequest
         content:
@@ -976,6 +1027,8 @@ paths:
       summary: Teste le controller
       description: Retourne pong
       operationId: pingUsingGET_3
+      tags:
+        - Debug
       responses:
         '200':
           description: OK
@@ -1000,6 +1053,8 @@ paths:
       summary: Teste le controller
       description: Retourne pong
       operationId: pingUsingGET
+      tags:
+        - Debug
       responses:
         '200':
           description: OK
@@ -1025,6 +1080,8 @@ paths:
       description: Récupère le contenu d'un texte du fonds des conventions collectives
         (KALI) à partir de son identifiant
       operationId: displayKaliTextUsingPOST
+      tags:
+        - Texte KALI
       requestBody:
         description: request
         content:
@@ -1060,6 +1117,8 @@ paths:
       summary: Contenu d'un article
       description: Récupère un article par son identifiant
       operationId: getArticleUsingPOST
+      tags:
+        - Article
       requestBody:
         description: articleRequest
         content:
@@ -1096,6 +1155,8 @@ paths:
       description: Récupère le contenu d'un texte de type LODA à partir de son identifiant
         et de sa date de vigueur
       operationId: displayLawDecreeUsingPOST
+      tags:
+        - Contenu Texte
       requestBody:
         description: lawDecreeConsultRequest
         content:
@@ -1132,6 +1193,8 @@ paths:
       description: Récupère le contenu d'un conteneur du fonds des conventions collectives
         (KALI) à partir de son idcc
       operationId: displayKaliContByIdccUsingPOST
+      tags:
+        - Texte KALI
       requestBody:
         description: request
         content:
@@ -1168,6 +1231,8 @@ paths:
       description: Effectue les diverses suggestions sur les différents fonds à partir
         d'une chaine de caractères et de la liste des fonds sélectionnés
       operationId: crossSearchUsingPOST
+      tags:
+        - General
       requestBody:
         description: request
         content:
@@ -1203,6 +1268,8 @@ paths:
       summary: Contenu des versions d'un article
       description: Récupère la liste des articles par leur identifiant commun
       operationId: getArticleByCidUsingPOST
+      tags:
+        - Article
       requestBody:
         description: request
         content:
@@ -1239,6 +1306,8 @@ paths:
       description: Récupère le contenu d'un texte du fonds JORF à partir de son idEli
         ou idEliAlias
       operationId: getJoCidWithEliOrAliasUsingPOST
+      tags:
+        - JO
       requestBody:
         description: jorfConsultWithIdEliAliasRequest
         content:
@@ -1274,6 +1343,8 @@ paths:
       summary: Liste des années sans table
       description: Permet de récupérer l'ensemble des années sans table annuelle
       operationId: getYearsWithoutTableUsingGET
+      tags:
+        - General
       responses:
         '200':
           description: OK
@@ -1298,6 +1369,8 @@ paths:
       summary: Liste paginée des codes
       description: Récupère les codes dans une liste paginée
       operationId: listCodeUsingPOST
+      tags:
+        - General
       requestBody:
         description: request
         content:
@@ -1333,6 +1406,8 @@ paths:
       summary: Contenu d'un accord d'entreprise
       description: Récupère le contenu d'un accord d'entreprise à partir de son identifiant
       operationId: displayAccoUsingPOST
+      tags:
+        - Contenu Texte
       requestBody:
         description: request
         content:
@@ -1368,6 +1443,8 @@ paths:
       summary: Contenu texte fonds CNIL
       description: Récupère le contenu d'un texte du fonds CNIL à partir de son identifiant
       operationId: displayCnilUsingPOST
+      tags:
+        - Contenu Texte
       requestBody:
         description: request
         content:
@@ -1403,6 +1480,8 @@ paths:
       summary: Teste le controller
       description: Retourne pong
       operationId: pingUsingGET_4
+      tags:
+        - Debug
       responses:
         '200':
           description: OK
@@ -1429,6 +1508,8 @@ paths:
         d'un texte à partir des identifiants du texte et de l'extrait (section ou
         article)
       operationId: getVersionByTextCidAndElementCidUsingPOST
+      tags:
+        - Article
       requestBody:
         description: request
         content:
@@ -1464,6 +1545,8 @@ paths:
       summary: Teste le controller
       description: Retourne pong
       operationId: pingUsingGET_5
+      tags:
+        - Debug
       responses:
         '200':
           description: OK
@@ -1489,6 +1572,8 @@ paths:
       description: Récupère le contenu d'un texte du fonds JORF à partir de l'identifiant
         d'une de ses sections ou articles
       operationId: displayJorfPartUsingPOST
+      tags:
+        - JO
       requestBody:
         description: request
         content:
@@ -1524,6 +1609,8 @@ paths:
       summary: Contenu d'une circualire
       description: Récupère le contenu d'une circulaire à partir de son identifiant
       operationId: displayCirculaireUsingPOST
+      tags:
+        - Contenu Texte
       requestBody:
         description: request
         content:
@@ -1559,6 +1646,8 @@ paths:
       summary: Liste des liens relatifs d'un article
       description: Permet de récupérer les liens relatifs d'un article donné
       operationId: displayRelatedLinksArticleUsingPOST
+      tags:
+        - Article
       requestBody:
         description: relatedLinksArticleRequest
         content:
