@@ -19,6 +19,8 @@ info:
     L'API Légifrance est mise à disposition sous [conditions](https://beta.legifrance.gouv.fr/contenu/pied-de-page/open-data-et-api).<br />
     <br />
     Pour toute question, vous pouvez écrire à l'adresse retours-legifrance-modernise@dila.gouv.fr.<br />
+    <br />
+    <br /><strong><em>Nécessite un compte gratuit et une application [PISTE](https://developer.aife.economie.gouv.fr/).</em></strong><br />
   version: 0.3.1
 servers:
 - url: https://api.aife.economie.gouv.fr/dila/legifrance-beta/lf-engine-app
